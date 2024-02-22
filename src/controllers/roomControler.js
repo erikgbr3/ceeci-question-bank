@@ -13,9 +13,27 @@ const RoomController = {
     }
   },
 
-  async getAllRooms(name, roomId) {
+  async getAllRoomsAdmin(name, roomId) {
     try {
-      const rooms = await Room.getRooms(name, roomId);
+      const rooms = await Room.getRoomsAdmin(name, roomId);
+      return rooms;
+    } catch (error) {
+      throw new Error('Error al leer las salas: ' + error.message);
+    }
+  },
+
+  async getAllRooms(userId) {
+    try {
+      const rooms = await Room.getRooms(userId);
+      return rooms;
+    } catch (error) {
+      throw new Error('Error al leer las salas: ' + error.message);
+    }
+  },
+
+  async getAllRoomsUser(name, roomId) {
+    try {
+      const rooms = await Room.getRoomsUser(name, roomId);
       return rooms;
     } catch (error) {
       throw new Error('Error al leer las salas: ' + error.message);
@@ -28,6 +46,15 @@ const RoomController = {
       return rooms;
     } catch (error) {
       throw new Error('Error al borrar una sala: ' + error.message);
+    }
+  },
+
+  updateEnabled: async (id, enabled) => {
+    try {
+      const newRoom = await Room.updateEnabledRoom(id, enabled);
+      return newRoom;
+    } catch (error) {
+      throw new Error('Error al crear la sala: ' + error.message);
     }
   },
 

@@ -3,106 +3,177 @@ import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View , FlatList, Text } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddRomView from "./addRoom";
-import RoomCard from "./getRooms";
+import RoomCardAdmin from "./getRoomsAdmin";
+import RoomCardMaster from "./getRoomsMaster";
 import RoomController from "../../controllers/roomControler";
 import { AuthContext } from "../../context/AuthContext";
+import RoomCardUser from "./getRoomsUser";
 
-const RoomsView = ({navigation}) => {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [rooms, setRooms] = useState([]);
-  const [isDataUpdated, setDataUpdated] = useState(false);
-  const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    fetchRooms();
-  }, []);
+  const RoomsView = ({navigation}) => {
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [roomsAdmin, setRoomsAdmin] = useState([]);
+    const [roomsMaster, setRoomsMaster] = useState([]);
+    const [roomsUser, setRoomsUser] = useState([]);
+    const [isDataUpdated, setDataUpdated] = useState(false);
+    const { user } = useContext(AuthContext);
 
-  const handleDataUpdate = () => {
-    fetchRooms();
-    setDataUpdated(false);
-  };
+    useEffect(() => {
+      fetchRoomsAdmin();
+    }, []);
 
-  const handleUpdateRoom = () => {
-    console.log('Before setDataUpdated:', isDataUpdated);
-    setDataUpdated(true);
-    console.log('After setDataUpdated:', isDataUpdated);
-  };
+    useEffect(() => {
+      fetchRoomsMaster(user.id);
+    }, []);
 
-  useEffect(() => {
-    if (isDataUpdated) {
-      console.log('handleDataUpdate called');
-      handleDataUpdate();
-    }
-  }, [isDataUpdated]);
+    useEffect(() => {
+      fetchRoomsUser();
+    }, []);
 
-  const fetchRooms = async () => {
-    try {
-      const roomsData = await RoomController.getAllRooms();
-      setRooms(roomsData);
-    } catch (error) {
-      console.error('Error fetching rooms:', error);
-    }
-  };
+    const handleDataUpdate = () => {
+      fetchRoomsAdmin();
+      fetchRoomsMaster(user.id);
+      fetchRoomsUser()
+      setDataUpdated(false);
+    };
 
-  const handleRoomDelete = async () => {
-    await fetchRooms();
-    setDataUpdated(true);
-  };
+    const handleUpdateRoom = () => {
+      console.log('Before setDataUpdated:', isDataUpdated);
+      setDataUpdated(true);
+      console.log('After setDataUpdated:', isDataUpdated);
+    };
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+    useEffect(() => {
+      if (isDataUpdated) {
+        console.log('handleDataUpdate called');
+        handleDataUpdate();
+      }
+    }, [isDataUpdated]);
 
-  return (
-    <View style={styles.container}> 
-      {user.rol === 'admin' && (
-      <Button
-        style={styles.button}
-        buttonColor='#6a9eda'
-        mode="contained"
-        onPress={toggleModal}
-      >
-        <Icon name="add" size={20} color="white" />
-      </Button>
-    )}
-      <AddRomView
-        isVisible={isModalVisible}
-        closeModal={() => {
-          toggleModal();
-          handleUpdateRoom();
-        }}
-      />
+    const fetchRoomsAdmin = async () => {
+      try {
+        const roomsData = await RoomController.getAllRoomsAdmin();
+        setRoomsAdmin(roomsData);
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
+      }
+    };
 
-      <FlatList
-        data={rooms}
-        renderItem={({ item }) => (
-          <RoomCard
-            room={item}
-            navigation={navigation}
-            handleRoomDelete={handleRoomDelete}
-          />
+    const fetchRoomsMaster = async (userId) => {
+      try {
+        const roomsData = await RoomController.getAllRooms(userId);
+        setRoomsMaster(roomsData);
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
+      }
+    };
+
+    const fetchRoomsUser = async () => {
+      try {
+        const roomsData = await RoomController.getAllRoomsUser();
+        setRoomsUser(roomsData);
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
+      }
+    };
+
+    const handleRoomDelete = async () => {
+      await fetchRoomsAdmin();
+      await fetchRoomsMaster(user.id);
+      await fetchRoomsUser()
+      setDataUpdated(true);
+    };
+
+    const toggleModal = () => {
+      setModalVisible(!isModalVisible);
+    };
+
+    return (
+      <View style={styles.container}> 
+        {(user.rol === 'admin'|| user.rol === 'maestro') && (
+        <Button
+          style={styles.button}
+          buttonColor='#6a9eda'
+          mode="contained"
+          onPress={toggleModal}
+        >
+          <Icon name="add" size={20} color="white" />
+        </Button>
+      )}
+        <AddRomView
+          isVisible={isModalVisible}
+          closeModal={() => {
+            toggleModal();
+            handleUpdateRoom();
+          }}
+        />
+
+        {user.rol === 'admin' &&(
+        <FlatList
+          data={roomsAdmin}
+          key={`roomsAdmin-${roomsAdmin.id}`}
+          renderItem={({ item }) => (
+            <RoomCardAdmin
+            key={roomsAdmin.id}
+              roomsAdmin={item}
+              navigation={navigation}
+              handleRoomDelete={handleRoomDelete}
+            />
+          )}
+        />
         )}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      {rooms.length === 0 && <Text>No hay habitaciones disponibles</Text>}
-    </View> 
-    
-  );
+        {(user.rol === 'admin' && !roomsAdmin.length === 0) && (<Text>No hay Salas disponibles</Text>)}
 
-}
+       {user.rol === 'maestro' &&(
+        <FlatList
+          data={roomsMaster}
+          key={`roomsMaster-${roomsMaster.id}`}
+          renderItem={({ item }) => (
+            <RoomCardMaster
+            key={roomsMaster.id}
+              room={item}
+              navigation={navigation}
+              handleRoomDelete={handleRoomDelete}
+            />
+          )}
+        />
+        )}
+        {(user.rol === 'maestro' && !roomsMaster.length === 0) && (<Text>No hay Salas disponibles</Text>)}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  button: {
-    marginTop: 10,
-    width: 70,
-    height: 70,
-    justifyContent:'center',
-    marginLeft: '30%',
-    marginRight: 10
-  },
-})
+        {user.rol === 'usuario' &&(
+        <FlatList
+          data={roomsUser}
+          key={`roomsUser-${roomsUser.id}`}
+          renderItem={({ item }) => (
+            <RoomCardUser
+            key={roomsUser.id}
+              room={item}
+              navigation={navigation}
+              handleRoomDelete={handleRoomDelete}
+            />
+          )}
+        />
+        )}
+        {(user.rol === 'usuario' && !roomsUser.length === 0) && (<Text>No hay Salas disponibles</Text>)}
 
-export default RoomsView
+      </View> 
+      
+    );
+
+  }
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1
+    },
+    button: {
+      marginTop: 10,
+      width: 70,
+      height: 70,
+      justifyContent:'center',
+      marginLeft: '30%',
+      marginRight: 10
+    },
+  })
+
+  export default RoomsView

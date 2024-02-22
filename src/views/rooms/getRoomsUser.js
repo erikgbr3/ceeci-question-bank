@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import DeleteRoomView from './deleteRoom';
 
-const RoomCard = ({ room, navigation, handleRoomDelete }) => {
-
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+const RoomCardUser = ({ room, navigation }) => {
 
   return (
     <TouchableOpacity 
@@ -18,16 +11,7 @@ const RoomCard = ({ room, navigation, handleRoomDelete }) => {
       <Text style={styles.title}>{room.id}</Text>
       <Text style={styles.title}>{room.name}</Text>
       <Text style={styles.userId}>User ID: {room.userId}</Text>
-      <TouchableOpacity onPress={toggleModal}>
-          <Text style={styles.deleteButton}>Eliminar</Text>
-        </TouchableOpacity>
       </View>
-        <DeleteRoomView 
-        room={room} 
-        closeModal={toggleModal} 
-        isVisible={isModalVisible}
-        handleRoomDelete={handleRoomDelete}
-        />
     </TouchableOpacity>
     
   );
@@ -55,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RoomCard;
+export default RoomCardUser;

@@ -72,7 +72,10 @@ const OptionsView = ({navigation, route}) => {
       />
        <FlatList
         data={options}
-        renderItem={({ item }) => <OptionCard option={item} navigation={navigation}/>}
+        renderItem={({ item }) => <OptionCard 
+        option={item} 
+        navigation={navigation}
+        />}
         keyExtractor={(item) => item.id.toString()}
       />
       {options.length === 0 && <Text>No hay opciones disponibles</Text>}

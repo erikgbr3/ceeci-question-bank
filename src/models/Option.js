@@ -44,6 +44,29 @@ class OptionArc {
     }
   }
 
+  static async updateOption(id, option1, option2, option3, correctA) {
+    try {
+      const response = await fetch(`${BackendConfig.url}/api/options?id=${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ option1, option2, option3, correctA }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      const updatedOption = await response.json();
+      return updatedOption;
+    } catch (error) {
+      throw new Error('Error al actualizar la opción: ' + error.message);
+    }
+  }
+  
+
 }
 
 export default OptionArc;

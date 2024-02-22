@@ -56,7 +56,7 @@ const BanksView = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
-      {user.rol === 'admin' && (
+      {(user.rol === 'admin' || user.rol === 'maestro')&& (
       <Button
         style={styles.button}
         buttonColor='#6a9eda'

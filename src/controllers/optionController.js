@@ -20,6 +20,15 @@ const OptionController = {
     }
   },
 
+  updateOption: async (id, option1, option2, option3, correctA) => {
+    try {
+      const updatedOption = await OptionArc.updateOption(id, option1, option2, option3, correctA);
+      return updatedOption;
+    } catch (error) {
+      throw new Error('Error al actualizar la opción: ' + error.message);
+    }
+  },
+
 };
 
 export default OptionController;

@@ -1,21 +1,38 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import { Button, TextInput } from 'react-native-paper';
+import SelectDropdown from 'react-native-select-dropdown';
 import Modal from 'react-native-modal';
 import RoomController from "../../controllers/roomControler";
+import UserController from "../../controllers/userController";
 import { AuthContext } from "../../context/AuthContext";
 
 const AddRomView = ({isVisible, closeModal}) => {
   const { user } = useContext(AuthContext);
-
   const [name, setName] = useState('');
+  const [users, setUsers] = useState('');
   const userId = user?.id;
+  const [selectedUserId, setSelectedUserId] = useState('');
+
+  const fetchUsers = async () => {
+    try {
+      const roomsData = await UserController.getAllUsers();
+      setUsers(roomsData);
+    } catch (error) {
+      console.error('Error fetching rooms:', error);
+    }
+  };
+
+  useEffect(()=> {
+    fetchUsers();
+  },[])
 
   const createRoom = async () => {
     try {
-      const userIdInt = parseInt(userId);
 
-      const newRoomData = await RoomController.createRoom(name, parseInt(userId));
+      const userIdToSend = selectedUserId || userId;
+
+      const newRoomData = await RoomController.createRoom(name, parseInt(userIdToSend));
  
       console.log(newRoomData);
       closeModal();
@@ -45,6 +62,29 @@ const AddRomView = ({isVisible, closeModal}) => {
         value={name}
         onChangeText={setName}
         />
+
+    {user.rol === 'admin' && (
+          <View>
+            <SelectDropdown
+              data={users}
+              defaultButtonText='Selecciona aquí'
+              onSelect={(selectedItem, index) => {
+                if(selectedItem){
+                  setSelectedUserId(selectedItem.id);
+                  console.log(selectedItem.id);
+                } else {
+                  console.log("alerta de error");  
+                }
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem.name;
+              }}
+              rowTextForSelection={(item, index) => {
+                return item.name;
+              }}
+            />
+          </View>
+        )}
 
         <View style={styles.haku}>
           <TouchableOpacity onPress={createRoom}>

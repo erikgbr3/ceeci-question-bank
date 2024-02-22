@@ -5,7 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { AuthContext } from '../../context/AuthContext';
 
 const LoginView = ({navigation}) => {
-  const { login } = useContext(AuthContext);
+  const { user, login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
