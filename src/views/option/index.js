@@ -2,27 +2,37 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View , FlatList, Text } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import AddRomView from "./addRoom";
-import RoomCard from "./getRooms";
-import RoomController from "../../controllers/roomControler";
+import AddOptionView from "./AddOptions";
+import OptionCard from "./getOptions";
+import OptionController from "../../controllers/optionController";
 import { AuthContext } from "../../context/AuthContext";
 
-const RoomsView = ({navigation}) => {
+const OptionsView = ({navigation, route}) => {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [rooms, setRooms] = useState([]);
+  const [options, setOptions] = useState([]);
   const [isDataUpdated, setDataUpdated] = useState(false);
+
   const { user } = useContext(AuthContext);
 
+  const fetchOption = async (questionId) => {
+    try {
+      const optionsData = await OptionController.getAllOptions(questionId);
+      setOptions(optionsData);
+    } catch (error) {
+      console.error('Error fetching options:', error);
+    }
+  };
+
   useEffect(() => {
-    fetchRooms();
+    fetchOption(route.params.questionId);
   }, []);
 
   const handleDataUpdate = () => {
-    fetchRooms();
+    fetchOption(route.params.questionId);
     setDataUpdated(false);
   };
 
-  const handleUpdateRoom = () => {
+  const handleUpdateOption = () => {
     console.log('Before setDataUpdated:', isDataUpdated);
     setDataUpdated(true);
     console.log('After setDataUpdated:', isDataUpdated);
@@ -35,26 +45,13 @@ const RoomsView = ({navigation}) => {
     }
   }, [isDataUpdated]);
 
-  const fetchRooms = async () => {
-    try {
-      const roomsData = await RoomController.getAllRooms();
-      setRooms(roomsData);
-    } catch (error) {
-      console.error('Error fetching rooms:', error);
-    }
-  };
-
-  const handleRoomDelete = async () => {
-    await fetchRooms();
-    setDataUpdated(true);
-  };
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
+
   return (
-    <View style={styles.container}> 
+    <View style={styles.container}>
       {user.rol === 'admin' && (
       <Button
         style={styles.button}
@@ -65,27 +62,22 @@ const RoomsView = ({navigation}) => {
         <Icon name="add" size={20} color="white" />
       </Button>
     )}
-      <AddRomView
-        isVisible={isModalVisible}
-        closeModal={() => {
-          toggleModal();
-          handleUpdateRoom();
-        }}
+      <AddOptionView
+       isVisible={isModalVisible}
+       questionId={route.params.questionId}
+       closeModal={() => {
+         toggleModal();
+         handleUpdateOption();
+       }}
       />
-
-      <FlatList
-        data={rooms}
-        renderItem={({ item }) => (
-          <RoomCard
-            room={item}
-            navigation={navigation}
-            handleRoomDelete={handleRoomDelete}
-          />
-        )}
+       <FlatList
+        data={options}
+        renderItem={({ item }) => <OptionCard option={item} navigation={navigation}/>}
         keyExtractor={(item) => item.id.toString()}
       />
-      {rooms.length === 0 && <Text>No hay habitaciones disponibles</Text>}
-    </View> 
+      {options.length === 0 && <Text>No hay opciones disponibles</Text>}
+ 
+    </View>
     
   );
 
@@ -105,4 +97,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default RoomsView
+export default OptionsView;

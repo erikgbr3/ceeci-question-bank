@@ -1,31 +1,45 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View , FlatList, Text } from "react-native";
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import AddRomView from "./addRoom";
-import RoomCard from "./getRooms";
-import RoomController from "../../controllers/roomControler";
+import Icon from 'react-native-vector-icons/MaterialIcons';import AddBankView from "./AddBanks";
+import BankCard from "./getBanks";
+import BankController from "../../controllers/bankController";
 import { AuthContext } from "../../context/AuthContext";
 
-const RoomsView = ({navigation}) => {
+const BanksView = ({route, navigation}) => {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [rooms, setRooms] = useState([]);
+  const [banks, setBanks] = useState([]);
   const [isDataUpdated, setDataUpdated] = useState(false);
+
   const { user } = useContext(AuthContext);
 
+  const fetchBanks = async (roomId) => {
+    try {
+      const banksData = await BankController.getAllBanks(roomId);
+      setBanks(banksData);
+    } catch (error) {
+      console.error('Error fetching rooms:', error);
+    }
+  };
+
   useEffect(() => {
-    fetchRooms();
+    fetchBanks(route.params.roomId);
   }, []);
 
   const handleDataUpdate = () => {
-    fetchRooms();
+    fetchBanks(route.params.roomId);
     setDataUpdated(false);
   };
 
-  const handleUpdateRoom = () => {
+  const handleUpdateBank = () => {
     console.log('Before setDataUpdated:', isDataUpdated);
     setDataUpdated(true);
     console.log('After setDataUpdated:', isDataUpdated);
+  };
+
+  const handleBankDelete = async () => {
+    await fetchBanks();
+    setDataUpdated(true);
   };
 
   useEffect(() => {
@@ -35,26 +49,13 @@ const RoomsView = ({navigation}) => {
     }
   }, [isDataUpdated]);
 
-  const fetchRooms = async () => {
-    try {
-      const roomsData = await RoomController.getAllRooms();
-      setRooms(roomsData);
-    } catch (error) {
-      console.error('Error fetching rooms:', error);
-    }
-  };
-
-  const handleRoomDelete = async () => {
-    await fetchRooms();
-    setDataUpdated(true);
-  };
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
+
   return (
-    <View style={styles.container}> 
+    <View style={styles.container}>
       {user.rol === 'admin' && (
       <Button
         style={styles.button}
@@ -64,28 +65,29 @@ const RoomsView = ({navigation}) => {
       >
         <Icon name="add" size={20} color="white" />
       </Button>
-    )}
-      <AddRomView
+      )}
+      <AddBankView
         isVisible={isModalVisible}
+        roomId={route.params.roomId}
         closeModal={() => {
           toggleModal();
-          handleUpdateRoom();
+          handleUpdateBank();
         }}
       />
-
-      <FlatList
-        data={rooms}
+       <FlatList
+        data={banks}
         renderItem={({ item }) => (
-          <RoomCard
-            room={item}
-            navigation={navigation}
-            handleRoomDelete={handleRoomDelete}
-          />
+        <BankCard 
+        bank={item} 
+        navigation={navigation} 
+        handleBankDelete={handleBankDelete}
+        />
         )}
         keyExtractor={(item) => item.id.toString()}
       />
-      {rooms.length === 0 && <Text>No hay habitaciones disponibles</Text>}
-    </View> 
+      {banks.length === 0 && <Text>No hay bancos disponibles</Text>}
+ 
+    </View>
     
   );
 
@@ -105,4 +107,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default RoomsView
+export default BanksView;

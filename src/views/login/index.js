@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, TextInput, View, Platform, TouchableOpacity, Alert, Image } from "react-native"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FontAwesome } from '@expo/vector-icons';
+import { AuthContext } from '../../context/AuthContext';
 
-
-const LoginView = ({ navigation }) => {
+const LoginView = ({navigation}) => {
+  const { login } = useContext(AuthContext);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async () => {
-    try {
-      
-    } catch (error) {
-      console.log('Error', error);
+  const handleLoginPress = async () => {
+    const result = await login(email, password);
+    if (result.success) {
+      navigation.replace('Main');
+    } else {
+      Alert.alert('Error', result.error);
     }
-  }
+  };
+  
   
   return (
     <View style={styles.container}>
@@ -27,26 +32,22 @@ const LoginView = ({ navigation }) => {
           <Text style={styles.tagInput}>Correo Electrónico</Text>
           <TextInput
             style={styles.input}
+            value={email}
             placeholder="abc@xyz.com"
-            onChangeText={(text) => { setAuthProp('email', text) }}
-            value='hola'
+            onChangeText={setEmail}
           />
-          {/* {errors?.email ? (
-            <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
-          ) : null} */}
+
           <Text style={styles.tagInput}>Contraseña</Text>
           
           <View style={styles.passwordContainer}>
             <TextInput
               style={styles.input}
+              value={password}
               placeholder="Contraseña"
               secureTextEntry={!showPassword}
-              onChangeText={(text) => { setAuthProp('password', text) }}
-              value='hola'
+              onChangeText={setPassword}
             />
-            {/*  {errors?.password ? (
-              <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
-            ) : null} */}
+
             <TouchableOpacity 
               onPress={() => setShowPassword(!showPassword)} 
               style={styles.showPassword}>
@@ -55,26 +56,13 @@ const LoginView = ({ navigation }) => {
           </View>
 
           <TouchableOpacity 
-            style={[styles.login, { backgroundColor: ('email' && 'password') ? '#1B6BC1' : '#c2dbf5' }]}
+            style={[styles.login, { backgroundColor: (email && password) ? '#1B6BC1' : '#c2dbf5' }]}
             /* disabled={!auth.email || !auth.password} */ 
-            onPress={handleLogin}>
+            onPress={handleLoginPress}>
             <Text 
-            style={[styles.loginText, {color: ('email' && 'password') ? "white" : "#154e8f"}]}
+            style={[styles.loginText, {color: (email && password) ? "white" : "#154e8f"}]}
             >Iniciar Sesión</Text>
           </TouchableOpacity>
-          <View style={styles.moreOptions}>
-            <Text style={styles.moreOptionsText}>O Inicia Sesión Como Invitado</Text>
-          </View>
-          <View style={styles.socialMedia}>
-            <TouchableOpacity style={styles.invitado} onPress={() => { navigation.navigate('Main') }}>
-              <Text style={styles.invitadoText}>Modo Invitado</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.footer}>
-            <Text style={styles.text}>¿No tienes una cuenta?
-              <Text style={styles.enlace} onPress={() => { navigation.navigate('sign up') }}> Regístrate Aquí</Text>
-            </Text>
-          </View>
       </View>
     </View>
   );
@@ -178,11 +166,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 30,
     justifyContent: "center",
-  },
-  footer: {
-    marginTop: 120,
-    justifyContent: "center",
-    alignItems: "center"
   },
   text: {
     fontSize: 16
