@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, TextInput } from 'react-native-paper';
-import { StyleSheet, View , FlatList, Text } from "react-native";
+import { StyleSheet, View , Text, TouchableOpacity, ScrollView,} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddRomView from "./addRoom";
 import RoomCard from "./getRooms";
@@ -54,55 +53,74 @@ const RoomsView = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}> 
-      {user.rol === 'admin' && (
-      <Button
-        style={styles.button}
-        buttonColor='#6a9eda'
-        mode="contained"
-        onPress={toggleModal}
-      >
-        <Icon name="add" size={20} color="white" />
-      </Button>
-    )}
-      <AddRomView
-        isVisible={isModalVisible}
-        closeModal={() => {
-          toggleModal();
-          handleUpdateRoom();
-        }}
-      />
-
-      <FlatList
-        data={rooms}
-        renderItem={({ item }) => (
-          <RoomCard
-            room={item}
-            navigation={navigation}
-            handleRoomDelete={handleRoomDelete}
+      <View style={styles.container}> 
+      <View style={styles.container2}>
+        <ScrollView>
+          <View style={styles.buttonC}>
+            {user.rol === 'admin' && (
+              <TouchableOpacity
+                style={styles.button}
+                buttonColor='#6a9eda'
+                mode="contained"
+                onPress={toggleModal}
+              >
+                <Icon name="add" size={30} color="white" />
+              </TouchableOpacity>
+            )}
+          </View>
+          <AddRomView
+            isVisible={isModalVisible}
+            closeModal={() => {
+              toggleModal();
+              handleUpdateRoom();
+            }}
           />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      {rooms.length === 0 && <Text>No hay habitaciones disponibles</Text>}
-    </View> 
-    
+          <View style={styles.roomContainer}>
+                {rooms.map(room => (
+                  <RoomCard
+                    key={room.id.toString()}
+                    room={room}
+                    navigation={navigation}
+                    handleRoomDelete={handleRoomDelete}
+                  />
+                ))}
+                {rooms.length === 0 && <Text>No hay habitaciones disponibles</Text>}
+          </View>
+        </ScrollView>
+      </View>
+      </View> 
   );
-
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#9E78EE'
+  },
+  container2: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
+  },
+  roomContainer: {
+    flex: 1,
+  },
+  buttonC: {
+    position: 'relative', // Cambiar a relativo
+    justifyContent: 'center', // Centrar el botón verticalmente
+    alignItems: 'center', // Centrar el botón horizontalmente
+    marginTop: 20, // Espacio superior
   },
   button: {
-    marginTop: 10,
-    width: 70,
-    height: 70,
-    justifyContent:'center',
-    marginLeft: '30%',
-    marginRight: 10
+    backgroundColor: '#6a9eda',
+    borderRadius: 999,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 10,
   },
-})
+});
 
-export default RoomsView
+export default RoomsView;

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import { AuthContext } from "./context/AuthContext";
 import BanksView from "./views/bank";
 import RoomsView from "./views/rooms";
@@ -8,7 +8,6 @@ import QuestionsView from "./views/questions";
 import OptionsView from "./views/option";
 import CustomMenu from "../components/CustomMenu";
 import UsersView from "./views/user";
-
 
 const Tab = createNativeStackNavigator();
 
@@ -40,12 +39,19 @@ export default function HomeScreen ({route, navigation}) {
 
 
 return (
-  <View style={{flex: 1}}>
+  <View style={styles.nav}>
   <Tab.Navigator
-  screenOptions={{
-    headerRight: () => (
-      <Button title={`${user.name}`} onPress={() => setMenuVisible(true)} />
-    ),
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#9E78EE',
+      },
+      headerTitleStyle: {
+        fontSize: 23
+      },
+      headerTintColor: 'white', // Establecer el color del texto del encabezado
+      headerRight: () => (
+        <Button color='white' title={`${user.name}`} onPress={() => setMenuVisible(true)} />
+      ),
   }}
   >
 
@@ -59,6 +65,7 @@ return (
         name= 'Bancos'
         initialParams={{ ...route.params }}
         options={({ route }) => ({ 
+
           title: route.params?.room || 'Bancos',
           animation: 'slide_from_right',  
         })}
@@ -110,3 +117,11 @@ return (
 )
 } 
 
+const styles = StyleSheet.create({
+  nav: {
+    flex: 1, //no borrar este 1, ni cambiar, no tocar
+  },
+  nav2: {
+    backgroundColor: 'blue'
+  },
+});

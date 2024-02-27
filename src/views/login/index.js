@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FontAwesome } from '@expo/vector-icons';
 import { AuthContext } from '../../context/AuthContext';
 
+
 const LoginView = ({navigation}) => {
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
@@ -23,51 +24,74 @@ const LoginView = ({navigation}) => {
   return (
     <View style={styles.container}>
 
-      <View style={styles.loginContainer}>
+      <View style={styles.border}>
+        <Text></Text>
+      </View>
 
-        <View style={styles.titleContainer}>
-          <Text style={styles.textTitle}>Inicia Sesion</Text>
-        </View>
-
-          <Text style={styles.tagInput}>Correo Electrónico</Text>
-          <TextInput
-            style={styles.input}
-            value={email}
-            placeholder="abc@xyz.com"
-            onChangeText={setEmail}
+      <View style={styles.loginImageContainer}>
+        <View style={styles.loginImageContainer2}>
+          <Image
+          source={require('../../../assets/4729436.png')}
+          style={styles.loginImage}
           />
+        </View>
+      </View>
 
-          <Text style={styles.tagInput}>Contraseña</Text>
-          
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.input}
-              value={password}
-              placeholder="Contraseña"
-              secureTextEntry={!showPassword}
-              onChangeText={setPassword}
-            />
-
-            <TouchableOpacity 
-              onPress={() => setShowPassword(!showPassword)} 
-              style={styles.showPassword}>
-              <FontAwesome name={showPassword ? 'eye-slash' : 'eye'} size={30} color="#1B6BC1" />
-            </TouchableOpacity>
+      <View style={styles.loginContainer}>
+      <View style={styles.loginContainer2}>
+          <View style={styles.titleContainer}>
+              <Text style={styles.textTitle}>Inicia Sesion</Text>
           </View>
 
-          <TouchableOpacity 
-            style={[styles.login, { backgroundColor: (email && password) ? '#1B6BC1' : '#c2dbf5' }]}
-            /* disabled={!auth.email || !auth.password} */ 
-            onPress={handleLoginPress}>
-            <Text 
-            style={[styles.loginText, {color: (email && password) ? "white" : "#154e8f"}]}
-            >Iniciar Sesión</Text>
-          </TouchableOpacity>
+            <Text style={styles.tagInput}>Correo Electrónico</Text>
+            <TextInput
+              style={styles.input}
+              value={email}
+              placeholder="abc@xyz.com"
+              onChangeText={setEmail}
+            />
+
+            <Text style={styles.tagInput}>Contraseña</Text>
+            
+            <View style={styles.passwordContainer}>
+              <TextInput
+                style={styles.input}
+                value={password}
+                placeholder="Contraseña"
+                secureTextEntry={!showPassword}
+                onChangeText={setPassword}
+              />
+
+              <TouchableOpacity 
+                onPress={() => setShowPassword(!showPassword)} 
+                style={styles.showPassword}>
+                <FontAwesome name={showPassword ? 'eye-slash' : 'eye'} size={30} color="#1B6BC1" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.loginC}>
+              <TouchableOpacity 
+                style={[styles.login, { backgroundColor: (email && password) ? '#78C6EE' : '#c2dbf5' }]}
+                /* disabled={!auth.email || !auth.password} */ 
+                onPress={handleLoginPress}>
+                <Text 
+                style={[styles.loginText, {color: (email && password) ? "white" : "#154e8f"}]}
+                >Iniciar Sesión</Text>
+              </TouchableOpacity>
+            </View>
+        </View>
       </View>
+
+      <View style={styles.border2}>
+        <Text></Text>
+      </View>
+
     </View>
   );
 };
 
+const color = {
+  primary: '#1B6BC1',
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -86,14 +110,52 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  loginImageContainer:{
+    backgroundColor: color.primary,
+  },
+  loginImageContainer2:{
+    alignItems: 'center',
+    borderTopRightRadius: '60',
+    backgroundColor: 'white',
+  },
+  loginImage:{
+    width: 160,
+    height: 160,
+    resizeMode: 'contain',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  border: {
+    width: '100%',
+    height: '15%',
+    backgroundColor: color.primary,
+    overflow: 'hidden',
+    borderBottomLeftRadius: '60', 
+  },
+  border2: {
+    width: '100%',
+    height: '15%',
+    backgroundColor: color.primary,
+    borderTopRightRadius: '50',
+  },
   loginContainer: {
+    backgroundColor: color.primary, 
+    height: "50%",
+    width: "100%",
+    flex: 1,
+  },
+  loginContainer2: {
+    backgroundColor: 'white', 
+    borderBottomLeftRadius: '60',
+    height: "50%",
+    width: "100%",
     flex: 1,
     padding: 10,
-    paddingTop: 200
   },
   titleContainer: {
+    width: '100%',
+    marginBottom: 14,
     alignItems: 'center',
-    paddingEnd: 30
   },
   textTitle: {
     fontSize: 26,
@@ -116,13 +178,17 @@ const styles = StyleSheet.create({
     paddingTop: 3,
     right: 30
   },
+  loginC: {
+    alignItems: 'center',
+  },
   login: {
     backgroundColor: '#1B6BC1',
     borderRadius: 20,
     marginTop: 30,
     height: 40,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: 200,
   },
   invitado: {
     backgroundColor: '#277dd0',
