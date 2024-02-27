@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View , FlatList, Text } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -19,13 +20,15 @@ const OptionsView = ({navigation, route}) => {
       const optionsData = await OptionController.getAllOptions(questionId);
       setOptions(optionsData);
     } catch (error) {
-      console.error('Error fetching options:', error);
+      console.error('Error al buscar las opciones:', error);
     }
   };
-
-  useEffect(() => {
-    fetchOption(route.params.questionId);
-  }, []);
+  
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchOption(route.params.questionId);
+    }, [])
+  );
 
   const handleDataUpdate = () => {
     fetchOption(route.params.questionId);
@@ -52,7 +55,7 @@ const OptionsView = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      {user.rol === 'admin' && (
+      {(user.rol === 'admin' || user.rol === 'maestro')&& (
       <Button
         style={styles.button}
         buttonColor='#6a9eda'

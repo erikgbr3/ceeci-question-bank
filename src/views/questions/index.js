@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View , FlatList, Text } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -19,13 +20,15 @@ const QuestionsView = ({navigation, route}) => {
       const questionsData = await QuestionController.getAllQuestion(bankId);
       setQuestions(questionsData);
     } catch (error) {
-      console.error('Error fetching questions:', error);
+      console.error('Error al buscar las preguntas:', error);
     }
   };
 
-  useEffect(() => {
-    fetchQuestions(route.params.bankId);
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchQuestions(route.params.bankId);
+    }, [])
+  );
 
   const handleDataUpdate = () => {
     fetchQuestions(route.params.bankId);
@@ -57,7 +60,7 @@ const QuestionsView = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      {user.rol === 'admin' && (
+      {(user.rol === 'admin' || user.rol === 'maestro') && (
       <Button
         style={styles.button}
         buttonColor='#6a9eda'
@@ -80,6 +83,7 @@ const QuestionsView = ({navigation, route}) => {
         renderItem={({ item }) => (
         <QuestionCard 
         question={item} 
+        user={user}
         navigation={navigation}
         handleQuestionDelete={handleQuestionDelete}
         />

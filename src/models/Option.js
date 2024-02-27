@@ -19,7 +19,7 @@ class OptionArc {
       const data = await response.json();
       return data;
     } catch (error) {
-      throw new Error('Error al crear la Pregunta: ' + error.message);
+      throw new Error('Error al crear las opciones: ' + error.message);
     }
   }
 
@@ -37,10 +37,10 @@ class OptionArc {
         throw new Error(errorData.message);
       }
 
-      const banks = await response.json();
-      return banks;
+      const options = await response.json();
+      return options;
     } catch (error) {
-      throw new Error('Error al obtener las habitaciones: ' + error.message);
+      throw new Error('Error al obtener las opciones: ' + error.message);
     }
   }
 

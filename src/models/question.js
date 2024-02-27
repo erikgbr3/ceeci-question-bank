@@ -37,10 +37,10 @@ class QuestionArc {
         throw new Error(errorData.message);
       }
 
-      const banks = await response.json();
-      return banks;
+      const question = await response.json();
+      return question;
     } catch (error) {
-      throw new Error('Error al obtener las habitaciones: ' + error.message);
+      throw new Error('Error al obtener las preguntas: ' + error.message);
     }
   }
 
@@ -58,10 +58,10 @@ class QuestionArc {
         throw new Error(errorData.message);
       }
 
-      const banks = await response.json();
-      return banks;
+      const question = await response.json();
+      return question;
     } catch (error) {
-      throw new Error('Error al borrar la sala: ' + error.message);
+      throw new Error('Error al borrar la pregunta: ' + error.message);
     }
   }
 

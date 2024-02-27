@@ -16,7 +16,7 @@ const DeleteQuestionView = ( { question, isVisible, closeModal, handleQuestionDe
       
       
     } catch (error) {
-      console.error('Error al borrar la sala:', error);
+      console.error('Error al borrar la pregunta:', error);
     }
   };
 

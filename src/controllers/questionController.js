@@ -27,7 +27,7 @@ const QuestionController = {
       const question = await QuestionArc.deleteQuestion(id);
       return question;
     } catch (error) {
-      throw new Error('Error al borrar una sala: ' + error.message);
+      throw new Error('Error al borrar la pregunta: ' + error.message);
     }
   },
 };

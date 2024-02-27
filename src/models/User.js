@@ -25,9 +25,30 @@ class User {
     }
   }
 
-  static async getUsers() {
+  static async getUsersAdmin() {
     try {
       const response = await fetch(`${BackendConfig.url}/api/users`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      const rooms = await response.json();
+      return rooms;
+    } catch (error) {
+      throw new Error('Error al obtener los Usuarios: ' + error.message);
+    }
+  }
+
+  static async getUsers() {
+    try {
+      const response = await fetch(`${BackendConfig.url}/api/users?rol=maestro`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

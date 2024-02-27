@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View , FlatList, Text } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';import AddBankView from "./AddBanks";
 import BankCard from "./getBanks";
 import BankController from "../../controllers/bankController";
 import { AuthContext } from "../../context/AuthContext";
+import BankCardUser from "./getBanksUser";
 
 const BanksView = ({route, navigation}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [banks, setBanks] = useState([]);
+  const [banksUser, setBanksUser] = useState([]);
   const [isDataUpdated, setDataUpdated] = useState(false);
 
   const { user } = useContext(AuthContext);
@@ -18,13 +21,31 @@ const BanksView = ({route, navigation}) => {
       const banksData = await BankController.getAllBanks(roomId);
       setBanks(banksData);
     } catch (error) {
-      console.error('Error fetching rooms:', error);
+      console.error('Error al buscar los bancos:', error);
     }
   };
 
-  useEffect(() => {
-    fetchBanks(route.params.roomId);
-  }, []);
+  const fetchBanksUser = async (roomId, enabled) => {
+    try {
+      const banksData = await BankController.getAllBanksUser(roomId, enabled);
+      const filteredBanks = banksData.filter(bank => bank.enabled === true);
+      setBanksUser(filteredBanks);
+    } catch (error) {
+      console.error('Error al buscar los bancos:', error);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchBanks(route.params.roomId);
+    }, [])
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchBanksUser(route.params.roomId, true);
+    }, [])
+  );
 
   const handleDataUpdate = () => {
     fetchBanks(route.params.roomId);
@@ -74,18 +95,39 @@ const BanksView = ({route, navigation}) => {
           handleUpdateBank();
         }}
       />
-       <FlatList
-        data={banks}
-        renderItem={({ item }) => (
-        <BankCard 
-        bank={item} 
-        navigation={navigation} 
-        handleBankDelete={handleBankDelete}
+
+      {(user.rol === 'admin' || user.rol === 'maestro') && (
+        <FlatList
+          data={banks}
+          renderItem={({ item }) => (
+          <BankCard 
+            bank={item} 
+            user={user}
+            navigation={navigation} 
+            handleBankDelete={handleBankDelete}
+            />
+            )}
+            keyExtractor={(item) => item.id.toString()}
         />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      {banks.length === 0 && <Text>No hay bancos disponibles</Text>}
+      )}
+       
+      {(user.rol === 'admin' || user.rol === 'maestro' && banks.length === 0) && <Text>No hay bancos disponibles</Text>}
+      
+      {user.rol === 'usuario' && (
+            <FlatList
+            data={banksUser}
+            renderItem={({ item }) => (
+            <BankCardUser 
+              bank={item} 
+              navigation={navigation} 
+              handleBankDelete={handleBankDelete}
+              />
+              )}
+              keyExtractor={(item) => item.id.toString()}
+          />
+      )}
+      
+      {(user.rol === 'usuario' && banks.length === 0) && <Text>No hay bancos disponibles</Text>}
  
     </View>
     

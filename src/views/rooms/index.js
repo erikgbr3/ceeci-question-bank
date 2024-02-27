@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View , FlatList, Text } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddRomView from "./addRoom";
 import RoomCardAdmin from "./getRoomsAdmin";
@@ -18,17 +19,13 @@ import RoomCardUser from "./getRoomsUser";
     const [isDataUpdated, setDataUpdated] = useState(false);
     const { user } = useContext(AuthContext);
 
-    useEffect(() => {
-      fetchRoomsAdmin();
-    }, []);
-
-    useEffect(() => {
-      fetchRoomsMaster(user.id);
-    }, []);
-
-    useEffect(() => {
-      fetchRoomsUser();
-    }, []);
+    useFocusEffect(
+      React.useCallback(() => {
+        fetchRoomsAdmin();
+        fetchRoomsMaster(user.id);
+        fetchRoomsUser();
+      }, [])
+    );
 
     const handleDataUpdate = () => {
       fetchRoomsAdmin();
@@ -38,14 +35,11 @@ import RoomCardUser from "./getRoomsUser";
     };
 
     const handleUpdateRoom = () => {
-      console.log('Before setDataUpdated:', isDataUpdated);
       setDataUpdated(true);
-      console.log('After setDataUpdated:', isDataUpdated);
     };
 
     useEffect(() => {
       if (isDataUpdated) {
-        console.log('handleDataUpdate called');
         handleDataUpdate();
       }
     }, [isDataUpdated]);
@@ -55,7 +49,7 @@ import RoomCardUser from "./getRoomsUser";
         const roomsData = await RoomController.getAllRoomsAdmin();
         setRoomsAdmin(roomsData);
       } catch (error) {
-        console.error('Error fetching rooms:', error);
+        console.error('Error al busacar las salas:', error);
       }
     };
 
@@ -64,7 +58,7 @@ import RoomCardUser from "./getRoomsUser";
         const roomsData = await RoomController.getAllRooms(userId);
         setRoomsMaster(roomsData);
       } catch (error) {
-        console.error('Error fetching rooms:', error);
+        console.error('Error al buscar las salas del maestro:', error);
       }
     };
 
@@ -73,7 +67,7 @@ import RoomCardUser from "./getRoomsUser";
         const roomsData = await RoomController.getAllRoomsUser();
         setRoomsUser(roomsData);
       } catch (error) {
-        console.error('Error fetching rooms:', error);
+        console.error('Error al busacr las salas para el usuario:', error);
       }
     };
 

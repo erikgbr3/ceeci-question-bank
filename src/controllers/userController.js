@@ -7,7 +7,16 @@ const UserController = {
       const newUser = await User.newUser(name, lastName, email, password, rol);
       return newUser;
     } catch (error) {
-      throw new Error('Error al crear la sala: ' + error.message);
+      throw new Error('Error al crear usuario: ' + error.message);
+    }
+  },
+
+  async getAllUsersAdmin() {
+    try {
+      const users = await User.getUsersAdmin();
+      return users;
+    } catch (error) {
+      throw new Error('Error al leer los usuarios: ' + error.message);
     }
   },
 
@@ -16,7 +25,7 @@ const UserController = {
       const users = await User.getUsers();
       return users;
     } catch (error) {
-      throw new Error('Error al leer las salas: ' + error.message);
+      throw new Error('Error al leer los usuarios: ' + error.message);
     }
   },
 

@@ -19,7 +19,7 @@ const AddBankView = ({isVisible, roomId, closeModal}) => {
       return newBankData;
       
     } catch (error) {
-      console.error('Error al crear la sala:', error);
+      console.error('Error al crear el banco:', error);
     }
   };
 

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 import { Button, TextInput } from 'react-native-paper';
 import SelectDropdown from 'react-native-select-dropdown';
 import Modal from 'react-native-modal';
@@ -19,13 +20,19 @@ const AddRomView = ({isVisible, closeModal}) => {
       const roomsData = await UserController.getAllUsers();
       setUsers(roomsData);
     } catch (error) {
-      console.error('Error fetching rooms:', error);
+      console.error('Error al buscar las salas:', error);
     }
   };
 
-  useEffect(()=> {
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUsers();
+    }, [])
+  );
+
+  /* useEffect(() => {
     fetchUsers();
-  },[])
+  }, []) */
 
   const createRoom = async () => {
     try {

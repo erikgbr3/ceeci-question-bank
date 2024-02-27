@@ -16,7 +16,7 @@ const DeleteBankView = ( { bank, isVisible, closeModal, handleBankDelete } ) => 
       
       
     } catch (error) {
-      console.error('Error al borrar la sala:', error);
+      console.error('Error al borrar el banco:', error);
     }
   };
 

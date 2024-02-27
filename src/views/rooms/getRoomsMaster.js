@@ -16,9 +16,9 @@ const RoomCardMaster = ({ room, navigation, handleRoomDelete }) => {
     try {
       const updatedRoom = await RoomController.updateEnabled(room.id, !isEnabled);
       setIsEnabled(!isEnabled);
-      console.log('Room enabled status updated:', updatedRoom);
+      console.log('Estado Enabled en Room actualizado:', updatedRoom);
     } catch (error) {
-      console.error('Error updating room enabled status:', error.message);
+      console.error('Error al actualizar el estado Enabled en Room:', error.message);
     }
   };
 

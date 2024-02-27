@@ -18,7 +18,7 @@ const RoomController = {
       const rooms = await Room.getRoomsAdmin(name, roomId);
       return rooms;
     } catch (error) {
-      throw new Error('Error al leer las salas: ' + error.message);
+      throw new Error('Error al leer las salas para el admin: ' + error.message);
     }
   },
 
@@ -27,7 +27,7 @@ const RoomController = {
       const rooms = await Room.getRooms(userId);
       return rooms;
     } catch (error) {
-      throw new Error('Error al leer las salas: ' + error.message);
+      throw new Error('Error al leer las salas del maestro: ' + error.message);
     }
   },
 
@@ -36,7 +36,7 @@ const RoomController = {
       const rooms = await Room.getRoomsUser(name, roomId);
       return rooms;
     } catch (error) {
-      throw new Error('Error al leer las salas: ' + error.message);
+      throw new Error('Error al leer las salas para el usuario: ' + error.message);
     }
   },
 

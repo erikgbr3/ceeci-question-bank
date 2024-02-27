@@ -42,7 +42,7 @@ class Room {
       const rooms = await response.json();
       return rooms;
     } catch (error) {
-      throw new Error('Error al obtener las habitaciones: ' + error.message);
+      throw new Error('Error al obtener las salas: ' + error.message);
     }
   }
 
@@ -63,13 +63,13 @@ class Room {
       const rooms = await response.json();
       return rooms;
     } catch (error) {
-      throw new Error('Error al obtener las habitaciones: ' + error.message);
+      throw new Error('Error al obtener las salas del maestro: ' + error.message);
     }
   }
 
   static async getRoomsUser() {
     try {
-      const response = await fetch(`${BackendConfig.url}/api/roomUser`, {
+      const response = await fetch(`${BackendConfig.url}/api/rooms?enabled=true`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ class Room {
       const rooms = await response.json();
       return rooms;
     } catch (error) {
-      throw new Error('Error al obtener las habitaciones: ' + error.message);
+      throw new Error('Error al obtener las salas para el usuario: ' + error.message);
     }
   }
 
@@ -102,8 +102,8 @@ class Room {
         throw new Error(errorData.message);
       }
 
-      const banks = await response.json();
-      return banks;
+      const room = await response.json();
+      return room;
     } catch (error) {
       throw new Error('Error al borrar la sala: ' + error.message);
     }
@@ -124,8 +124,8 @@ class Room {
         throw new Error(errorData.message);
       }
 
-      const data = await response.json();
-      return data;
+      const room = await response.json();
+      return room;
     } catch (error) {
       throw new Error('Error al iniciar sesión: ' + error.message);
     }

@@ -24,7 +24,7 @@ const AddOptionView = ({isVisible, questionId, closeModal}) => {
       return newOptionData;
       
     } catch (error) {
-      console.error('Error al crear la pregunta:', error);
+      console.error('Error al crear las opciones:', error);
     }
   };
 

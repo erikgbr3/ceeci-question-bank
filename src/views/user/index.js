@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, TextInput } from 'react-native-paper';
+import { useFocusEffect } from '@react-navigation/native';
+import { Button,} from 'react-native-paper';
 import { StyleSheet, View , FlatList, Text } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddUserView from "./addUser";
@@ -11,9 +12,11 @@ const UsersView = ({navigation}) => {
   const [users, setUsers] = useState([]);
   const [isDataUpdated, setDataUpdated] = useState(false);
 
-  useEffect(() => {
+  useFocusEffect(
+    React.useCallback(() => {
     fetchUsers();
-  }, []);
+    }, [])
+  );
 
   const handleDataUpdate = () => {
     fetchUsers();
@@ -35,10 +38,10 @@ const UsersView = ({navigation}) => {
 
   const fetchUsers = async () => {
     try {
-      const usersData = await UserController.getAllUsers();
+      const usersData = await UserController.getAllUsersAdmin();
       setUsers(usersData);
     } catch (error) {
-      console.error('Error fetching rooms:', error);
+      console.error('Error fetching users:', error);
     }
   };
 

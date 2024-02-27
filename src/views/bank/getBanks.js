@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
 import DeleteBankView from './deleteBank';
+import BankController from '../../controllers/bankController';
 
-const BankCard = ({ bank, navigation, handleBankDelete }) => {
+const BankCard = ({ bank, user, navigation, handleBankDelete }) => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(bank.enabled);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const toggleEnabled = async () => {
+    try {
+      const updatedBank = await BankController.updateEnabled(bank.id, !isEnabled);
+      setIsEnabled(!isEnabled);
+      console.log('Estado Enabled en Bank actualizado:', updatedBank);
+    } catch (error) {
+      console.error('Error al actualizar el estado Enabled en Bank:', error.message);
+    }
   };
 
   return (
@@ -17,6 +29,15 @@ const BankCard = ({ bank, navigation, handleBankDelete }) => {
       <Text style={styles.title}>{bank.id}</Text>
       <Text style={styles.title}>{bank.name}</Text>
       <Text style={styles.userId}>Room ID: {bank.roomId}</Text>
+      {user.rol === 'maestro' && (
+        <Switch
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleEnabled}
+          value={isEnabled}
+        />
+      )}
       <TouchableOpacity onPress={toggleModal}>
           <Text style={styles.deleteButton}>Eliminar</Text>
         </TouchableOpacity>
