@@ -1,30 +1,51 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 const OptionCard = ({ option, navigation }) => {
   return (
     <View>
-      <View style={styles.card}>
-        <Text style={styles.userId}>Question ID: {option.questionId}</Text>
-      </View>
       <TouchableOpacity >
         <View style={styles.card}>
-        <Text style={styles.userId}>Opcion 1: {option.option1}</Text>
-      </View>
-      </TouchableOpacity>
-      <TouchableOpacity >
-        <View style={styles.card}>
-        <Text style={styles.userId}>Opcion 2: {option.option2}</Text>
+          <View style={styles.titleC}>
+            <Text style={styles.title}>Opcion 1: {option.option1}</Text>
+            <Image
+                source={require('../../../assets/x.png')}
+                style={styles.image}
+            />
+          </View>
       </View>
       </TouchableOpacity>
       <TouchableOpacity >
         <View style={styles.card}>
-        <Text style={styles.userId}>Opcion 3: {option.option3}</Text>
+          <View style={styles.titleC}>
+          <Text style={styles.title}>Opcion 2: {option.option2}</Text>
+          <Image
+              source={require('../../../assets/x.png')}
+              style={styles.image}
+          />
+        </View>
       </View>
       </TouchableOpacity>
       <TouchableOpacity >
         <View style={styles.card}>
-        <Text style={styles.userId}>Respuesta Correcta: {option.correctA}</Text>
+          <View style={styles.titleC}>
+          <Text style={styles.title}>Opcion 3: {option.option3}</Text>
+          <Image
+              source={require('../../../assets/x.png')}
+              style={styles.image}
+          />
+        </View>
+      </View>
+      </TouchableOpacity>
+      <TouchableOpacity >
+        <View style={styles.card}>
+          <View style={styles.titleC}>
+          <Text style={styles.title}>Respuesta Correcta: {option.correctA}</Text>
+          <Image
+              source={require('../../../assets/y.png')}
+              style={styles.image}
+          />
+        </View>
       </View>
       </TouchableOpacity>
     </View>
@@ -33,23 +54,31 @@ const OptionCard = ({ option, navigation }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    backgroundColor: '#b8e4ff',
+    borderRadius: 13,
     padding: 10,
     margin: 10,
+    minHeight: '20%',
+    justifyContent: 'center'
+  },
+  image: {
+    width: 50,
+    height: 50,
+    bottom: 12
+  },
+  titleC:{
+    top: 10 ,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
+    marginLeft: 20,
+    width: '60%',
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  userId: {
-    marginTop: 5,
-    color: '#555',
-  },
-  keyRoom: {
-    marginTop: 5,
-    color: '#555',
+    marginBottom: 12
   },
 });
 

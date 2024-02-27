@@ -3,16 +3,14 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const UserCard = ({ user, navigation }) => {
   return (
-    <TouchableOpacity 
-    >
+    <TouchableOpacity>
       <View style={styles.card}>
-      <Text style={styles.title}>{user.id}</Text>
-      <Text style={styles.title}>{user.name}</Text>
-      <Text style={styles.title}>{user.lastName}</Text>
-      <Text style={styles.title}>{user.email}</Text>
-      <Text style={styles.title}>{user.password}</Text>
-      <Text style={styles.title}>{user.rol}</Text>
-    </View>
+        <Text style={styles.title}>Nombre: {user.name}</Text>
+        <Text style={styles.title}>Apellidos: {user.lastName}</Text>
+        <Text style={styles.title}>Correo: {user.email}</Text>
+        <Text style={styles.title}>Contraseña: {user.password}</Text>
+        <Text style={styles.title}>Rol: {user.rol}</Text>
+      </View>
     </TouchableOpacity>
     
   );
@@ -20,9 +18,8 @@ const UserCard = ({ user, navigation }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    backgroundColor: '#b8e4ff',
+    borderRadius: 13,
     padding: 10,
     margin: 10,
   },

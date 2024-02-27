@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, TextInput } from 'react-native-paper';
-import { StyleSheet, View , FlatList, Text } from "react-native";
+import { StyleSheet, View , Image, Text, TouchableOpacity, ScrollView} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddQuestionView from "./AddQuestions";
 import QuestionCard from "./getQuestions";
@@ -57,16 +56,21 @@ const QuestionsView = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      {user.rol === 'admin' && (
-      <Button
-        style={styles.button}
-        buttonColor='#6a9eda'
-        mode="contained"
-        onPress={toggleModal}
-      >
-        <Icon name="add" size={20} color="white" />
-      </Button>
-    )}
+    <View style={styles.container2}>
+      <ScrollView>
+        <View  style={styles.buttonC}>
+          {user.rol === 'admin' && (
+            <TouchableOpacity
+              style={styles.button}
+              buttonColor='#6a9eda'
+              mode="contained"
+              onPress={toggleModal}
+            >
+              <Icon name="add" size={30} color="white" />
+            </TouchableOpacity>
+          )}
+        </View>
+      
       <AddQuestionView
         isVisible={isModalVisible}
         bankId={route.params.bankId}
@@ -75,36 +79,84 @@ const QuestionsView = ({navigation, route}) => {
           handleUpdateQuestion();
       }}
       />
-       <FlatList
-        data={questions}
-        renderItem={({ item }) => (
-        <QuestionCard 
-        question={item} 
-        navigation={navigation}
-        handleQuestionDelete={handleQuestionDelete}
-        />
-      )}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      {questions.length === 0 && <Text>No hay preguntas disponibles</Text>}
- 
+        <View style={styles.questionContainer}>
+              {questions.map(question =>(
+                <QuestionCard
+                  key={question.id.toString()}
+                  question={question}
+                  navigation={navigation}
+                  handleQuestionDelete={handleQuestionDelete}
+                  style={styles.questionCard} 
+                />
+              ))}
+                {questions == 0 && 
+                  <View style={styles.ContainerV}>
+                  <Text style={styles.text}>
+                    No hay preguntas disponibles
+                  </Text>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={require('../../../assets/cat3.gif')}
+                      style={styles.image2}
+                    /> 
+                  </View>
+                </View>
+                }
+        </View>
+      </ScrollView>
     </View>
-    
+    </View>
   );
 
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#9E78EE'
+  },
+  container2:{
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopLeftRadius: '22',
+    borderTopRightRadius: '22',
+  },
+  buttonC: {
+    position: 'relative', // Cambiar a relativo
+    justifyContent: 'center', // Centrar el botón verticalmente
+    alignItems: 'center', // Centrar el botón horizontalmente
+    marginTop: 20, // Espacio superior
   },
   button: {
-    marginTop: 10,
-    width: 70,
-    height: 70,
-    justifyContent:'center',
-    marginLeft: '30%',
-    marginRight: 10
+    backgroundColor: '#6a9eda',
+    borderRadius: 999,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 10,
+  },
+  questionCard: {
+    width: '48%', // Ajustamos el ancho para ocupar casi la mitad del contenedor con un pequeño espacio entre ellas
+    marginBottom: 10,
+  },
+  ContainerV: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    marginTop: 30,
+    fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  imageContainer: {
+    position: 'relative',
+  },
+  image2: {
+    width: 250,
+    height: 250,
   },
 })
 
