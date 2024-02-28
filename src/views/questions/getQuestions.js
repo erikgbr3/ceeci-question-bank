@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import DeleteQuestionView from './deleteQuestion';
-import OptionController from '../../controllers/optionController';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -69,14 +68,17 @@ const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
       onPress={() => navigation.navigate('Opciones', { questionId: question.id, question: question.textQuestion })}
     >
       <View style={styles.card}>
-        <Text style={styles.title}>{question.id}</Text>
-        <Text style={styles.title}>{question.textQuestion}</Text>
-        <Text style={styles.userId}>Bank ID: {question.bankId}</Text>
-        
-          <TouchableOpacity onPress={toggleModal}>
-            <Text style={styles.deleteButton}>Eliminar</Text>
-          </TouchableOpacity>
-        
+        <View style={styles.titleC}>
+          <Text style={styles.title}>{question.textQuestion}</Text>
+          <Image
+              source={require('../../../assets/pregunta.png')}
+              style={styles.image}
+          />                
+        </View>
+
+      <TouchableOpacity style={styles.deleteButton} onPress={toggleModal}>
+        <Icon name="delete" size={24} color="white" />
+      </TouchableOpacity>
       </View>
       <DeleteQuestionView
         question={question} 
@@ -93,7 +95,7 @@ const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
             <View >
               <Text style={styles.title}>{question.id}</Text>
               <Text style={styles.title}>{question.textQuestion}</Text>
-              <Text style={styles.userId}>Bank ID: {question.bankId}</Text>
+              <Text >Bank ID: {question.bankId}</Text>
             </View>
           </TouchableOpacity>
           {isDropdownOpen && (
@@ -136,19 +138,34 @@ const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
+    backgroundColor: '#84b6f4',
+    borderRadius: 13,
+    padding: 2,
     margin: 10,
+    alignItems: 'flex-end',
+    marginBottom: 20,
+  },
+  image:{
+    width: 50,
+    height: 50,
+  },
+  titleC:{
+    top: 10 ,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    marginLeft: 20,
+    width: '60%',
+    fontSize: 17,
   },
-  userId: {
-    marginTop: 5,
-    color: '#555',
+  deleteButton:{
+    backgroundColor: '#f45572',
+    borderRadius: 55,
+    padding: 9,
+    top: 22,
   },
   options: {
     fontSize: 16

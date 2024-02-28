@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { Button,} from 'react-native-paper';
-import { StyleSheet, View , FlatList, Text } from "react-native";
+import { Button, TextInput } from 'react-native-paper';
+import { ScrollView, StyleSheet, View , FlatList, Text, Animated, TouchableOpacity, Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddUserView from "./addUser";
 import UserCard from "./getUser";
@@ -52,39 +52,72 @@ const UsersView = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Button style={styles.button} buttonColor='#6a9eda' mode="contained" onPress={toggleModal}>
-              <Icon name="add" size={20} color="white" />
-      </Button>
-      <AddUserView
-        isVisible={isModalVisible}
-        closeModal={() => {
-          toggleModal();
-          handleUpdateUser();
-        }}
-      />
-      <FlatList
-        data={users}
-        renderItem={({ item }) => <UserCard user={item} navigation={navigation} />}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      {users.length === 0 && <Text>No hay Usuarios</Text>}
-    </View>
-    
-  );
+    <View style={styles.container2}>
+        <ScrollView>
 
+        <View style={styles.buttonC}>
+          <TouchableOpacity 
+            style={styles.button} 
+            buttonColor='#6a9eda' 
+            mode="contained" 
+            onPress={toggleModal}>
+                  <Icon name="add" size={20} color="white" />
+          </TouchableOpacity>
+        </View>
+        <AddUserView
+          isVisible={isModalVisible}
+          closeModal={() => {
+            toggleModal();
+            handleUpdateUser();
+          }}
+        />
+        <View style={styles.userContainer}>
+            {users.map(user => (
+              <UserCard 
+                key={user.id.toString()} 
+                user={user} 
+                navigation={navigation} 
+              />
+            ))}
+            {users.length === 0 && <Text>No hay Usuarios</Text>}
+        </View>
+     </ScrollView>
+    </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#9E78EE',
+    width: '100%',
+  },
+  container2:{
+    flex: 1,
+    width: '100%',
+    backgroundColor: 'white',
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
+    alignItems: 'center'
+  },
+  userContainer:{
+    flex: 1,
+  },
+  buttonC: {
+    position: 'relative', // Cambiar a relativo
+    justifyContent: 'center', // Centrar el botón verticalmente
+    alignItems: 'center', // Centrar el botón horizontalmente
+    marginTop: 20, // Espacio superior
   },
   button: {
-    marginTop: 10,
-    width: 70,
-    height: 70,
-    justifyContent:'center',
-    marginLeft: '30%',
-    marginRight: 10
+    backgroundColor: '#6a9eda',
+    borderRadius: 999,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 10,
   },
 })
 

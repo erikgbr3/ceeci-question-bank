@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Switch } from 'react-native';
 import DeleteBankView from './deleteBank';
 import BankController from '../../controllers/bankController';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const BankCard = ({ bank, user, navigation, handleBankDelete }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -26,10 +27,14 @@ const BankCard = ({ bank, user, navigation, handleBankDelete }) => {
       onPress={() => navigation.navigate('Preguntas', { bankId: bank.id, bank: bank.name })}
     >
       <View style={styles.card}>
-      <Text style={styles.title}>{bank.id}</Text>
-      <Text style={styles.title}>{bank.name}</Text>
-      <Text style={styles.userId}>Room ID: {bank.roomId}</Text>
-      {user.rol === 'maestro' && (
+        <View style={styles.titleC}>
+          <Text style={styles.title}>{bank.name}</Text>
+          <Image
+                source={require('../../../assets/materia2.png')}
+                style={styles.image}
+          />
+        </View>
+        {user.rol === 'maestro' && (
         <Switch
           trackColor={{ false: "#767577", true: "#81b0ff" }}
           thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
@@ -38,9 +43,9 @@ const BankCard = ({ bank, user, navigation, handleBankDelete }) => {
           value={isEnabled}
         />
       )}
-      <TouchableOpacity onPress={toggleModal}>
-          <Text style={styles.deleteButton}>Eliminar</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.deleteButton} onPress={toggleModal}>
+          <Icon name="delete" size={24} color="white" />
+      </TouchableOpacity>
       </View>
         <DeleteBankView
         bank={bank} 
@@ -55,23 +60,34 @@ const BankCard = ({ bank, user, navigation, handleBankDelete }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    backgroundColor: '#b0c2f2',
+    borderRadius: 13,
     padding: 10,
     margin: 10,
+    alignItems: 'flex-end',
+  },
+  image:{
+    width: 50,
+    height: 50,
+  },
+  titleC:{
+    top: 10 ,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
-    fontSize: 18,
+    marginLeft: 20,
+    width: '60%',
+    fontSize: 20,
     fontWeight: 'bold',
   },
-  userId: {
-    marginTop: 5,
-    color: '#555',
-  },
-  keyRoom: {
-    marginTop: 5,
-    color: '#555',
+  deleteButton:{
+    backgroundColor: '#f45572',
+    borderRadius: 55,
+    padding: 9,
+    top: 22,
   },
 });
 

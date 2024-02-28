@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import OptionController from '../../controllers/optionController';
 
 const OptionCard = ({ option, navigation }) => {
@@ -60,28 +60,49 @@ const OptionCard = ({ option, navigation }) => {
 
   return (
     <View>
-      <View style={styles.card}>
-        <Text>{option.questionId}</Text>
+      <TouchableOpacity onPress={handleEdit}>
+        <View style={styles.card}>
+          <View style={styles.titleC}>
+            <Text style={styles.title}>Opcion 1: {renderOptionField('option1')}</Text>
+            <Image
+                source={require('../../../assets/x.png')}
+                style={styles.image}
+            />
+          </View>
       </View>
-      <TouchableOpacity onPress={handleEdit}>
-        <View style={styles.card}>
-          {renderOptionField('option1')}
-        </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleEdit}>
         <View style={styles.card}>
-          {renderOptionField('option2')}
+          <View style={styles.titleC}>
+          <Text style={styles.title}>Opcion 2: {renderOptionField('option2')}</Text>
+          <Image
+              source={require('../../../assets/x.png')}
+              style={styles.image}
+          />
         </View>
+      </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleEdit}>
         <View style={styles.card}>
-          {renderOptionField('option3')}
+          <View style={styles.titleC}>
+          <Text style={styles.title}>Opcion 3: {renderOptionField('option3')}</Text>
+          <Image
+              source={require('../../../assets/x.png')}
+              style={styles.image}
+          />
         </View>
+      </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleEdit}>
         <View style={styles.card}>
-          {renderOptionField('correctA')}
+          <View style={styles.titleC}>
+          <Text style={styles.title}>Respuesta Correcta: {renderOptionField('correctA')}</Text>
+          <Image
+              source={require('../../../assets/y.png')}
+              style={styles.image}
+          />
         </View>
+      </View>
       </TouchableOpacity>
       {isEditing && (
         <View style={styles.buttonContainer}>
@@ -103,26 +124,31 @@ const OptionCard = ({ option, navigation }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    backgroundColor: '#b8e4ff',
+    borderRadius: 13,
     padding: 10,
     margin: 10,
+    minHeight: '20%',
+    justifyContent: 'center'
+  },
+  image: {
+    width: 50,
+    height: 50,
+    bottom: 12
+  },
+  titleC:{
+    top: 10 ,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
+    marginLeft: 20,
+    width: '60%',
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  userId: {
-    marginTop: 5,
-    color: '#555',
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 5,
-    marginTop: 5,
+    marginBottom: 12
   },
   buttonContainer: {
     flexDirection: 'row',

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { Button, TextInput } from 'react-native-paper';
-import { StyleSheet, View , FlatList, Text } from "react-native";
+import { StyleSheet, View , Text, TouchableOpacity, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';import AddBankView from "./AddBanks";
 import BankCard from "./getBanks";
 import BankController from "../../controllers/bankController";
@@ -77,75 +76,93 @@ const BanksView = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
-      {(user.rol === 'admin' || user.rol === 'maestro')&& (
-      <Button
-        style={styles.button}
-        buttonColor='#6a9eda'
-        mode="contained"
-        onPress={toggleModal}
-      >
-        <Icon name="add" size={20} color="white" />
-      </Button>
-      )}
-      <AddBankView
-        isVisible={isModalVisible}
-        roomId={route.params.roomId}
-        closeModal={() => {
-          toggleModal();
-          handleUpdateBank();
-        }}
-      />
-
-      {(user.rol === 'admin' || user.rol === 'maestro') && (
-        <FlatList
-          data={banks}
-          renderItem={({ item }) => (
-          <BankCard 
-            bank={item} 
-            user={user}
-            navigation={navigation} 
-            handleBankDelete={handleBankDelete}
-            />
-            )}
-            keyExtractor={(item) => item.id.toString()}
+    <View style={styles.container2}>
+     <ScrollView>
+      <View style={styles.buttonC}>
+        {(user.rol === 'admin' || user.rol === 'maestro') && (
+          <TouchableOpacity 
+            style={styles.button}
+            buttonColor='#6a9eda'
+            mode="contained"
+            onPress={toggleModal}
+          >
+            <Icon name="add" size={30} color="white" />
+          </TouchableOpacity>
+          )}
+        </View>
+        <AddBankView
+          isVisible={isModalVisible}
+          roomId={route.params.roomId}
+          closeModal={() => {
+            toggleModal();
+            handleUpdateBank();
+          }}
         />
-      )}
-       
-      {(user.rol === 'admin' || user.rol === 'maestro' && banks.length === 0) && <Text>No hay bancos disponibles</Text>}
-      
-      {user.rol === 'usuario' && (
-            <FlatList
-            data={banksUser}
-            renderItem={({ item }) => (
-            <BankCardUser 
-              bank={item} 
-              navigation={navigation} 
-              handleBankDelete={handleBankDelete}
-              />
-              )}
-              keyExtractor={(item) => item.id.toString()}
-          />
-      )}
-      
-      {(user.rol === 'usuario' && banks.length === 0) && <Text>No hay bancos disponibles</Text>}
- 
+        {(user.rol === 'admin' || user.rol === 'maestro') && (
+          <View style={styles.bankContainer}>
+              {banks.map(bank => (
+                <BankCard
+                  key={bank.id.toString()}
+                  bank={bank}
+                  user={user}
+                  navigation={navigation}
+                  handleBankDelete={handleBankDelete}
+                />
+              ))}
+              {banks.length == 0 && <Text>No hay bancos disponibles</Text>}
+        </View>
+        )}
+        
+        {user.rol === 'usuario' && (
+          <View style={styles.bankContainer}>
+              {banksUser.map(bank => (
+                <BankCardUser
+                  key={bank.id.toString()}
+                  bank={bank}
+                  navigation={navigation}
+                  handleBankDelete={handleBankDelete}
+                />
+              ))}
+              {banks.length == 0 && <Text>No hay bancos disponibles</Text>}
+        </View>
+        )}
+        
+      </ScrollView>
     </View>
-    
+    </View>
   );
 
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#9E78EE'
+  },
+  container2: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
+    alignItems: 'center',
+  },
+  bankContainer:{
+    flex: 1,
+  },
+  buttonC: {
+      position: 'relative', // Cambiar a relativo
+      justifyContent: 'center', // Centrar el botón verticalmente
+      alignItems: 'center', // Centrar el botón horizontalmente
+      marginTop: 20, // Espacio superior
   },
   button: {
-    marginTop: 10,
-    width: 70,
-    height: 70,
-    justifyContent:'center',
-    marginLeft: '30%',
-    marginRight: 10
+    backgroundColor: '#6a9eda',
+    borderRadius: 999,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 10,
   },
 })
 

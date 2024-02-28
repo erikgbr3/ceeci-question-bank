@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import React, { useContext, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { Button, TextInput } from 'react-native-paper';
+import { Text, TouchableOpacity, View, StyleSheet, TextInput} from "react-native";
+import { Button } from 'react-native-paper';
 import SelectDropdown from 'react-native-select-dropdown';
 import Modal from 'react-native-modal';
 import RoomController from "../../controllers/roomControler";
@@ -96,13 +96,13 @@ const AddRomView = ({isVisible, closeModal}) => {
         <View style={styles.haku}>
           <TouchableOpacity onPress={createRoom}>
               <Button style={styles.button} buttonColor='#6a9eda'>
-                <Text>Crear</Text>
+                <Text style={styles.buttonText}>Crear</Text>
               </Button>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={handlePressCloseModal}>
             <Button style={styles.button} buttonColor='#f45572'>
-              <Text>Cancelar</Text>
+              <Text style={styles.buttonText}>Cancelar</Text>
             </Button>
           </TouchableOpacity>
         </View>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: 'white',
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 20,
     alignItems: 'center',
   },
   haku: {
@@ -133,16 +133,20 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 18,
     borderColor: 'rgba(198,198,199, 0.5)',
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 16,
-    marginBottom: 10,
+    marginBottom: 20,
+    marginTop: 20,
     padding: 10,
   },
   button: {
-    width: 'auto',
+    minWidth: 90,    
     marginLeft: 8,
     marginRight: 8  
-  },  
+  },
+  buttonText: {
+    color: 'black'
+  }, 
 })
 
 export default AddRomView;

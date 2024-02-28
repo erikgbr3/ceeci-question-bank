@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
-import { Button, TextInput } from 'react-native-paper';
+import { Text, TouchableOpacity, View, StyleSheet, TextInput } from "react-native";
+import { Button,  } from 'react-native-paper';
 import Modal from 'react-native-modal';
 import UserController from "../../controllers/userController";
 

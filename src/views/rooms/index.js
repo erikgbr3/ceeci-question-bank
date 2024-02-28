@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, TextInput } from 'react-native-paper';
-import { StyleSheet, View , FlatList, Text } from "react-native";
+import { StyleSheet, View , Text, TouchableOpacity, ScrollView,} from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddRomView from "./addRoom";
@@ -82,92 +81,107 @@ import RoomCardUser from "./getRoomsUser";
       setModalVisible(!isModalVisible);
     };
 
-    return (
+  return (
       <View style={styles.container}> 
-        {(user.rol === 'admin'|| user.rol === 'maestro') && (
-        <Button
-          style={styles.button}
-          buttonColor='#6a9eda'
-          mode="contained"
-          onPress={toggleModal}
-        >
-          <Icon name="add" size={20} color="white" />
-        </Button>
-      )}
-        <AddRomView
-          isVisible={isModalVisible}
-          closeModal={() => {
-            toggleModal();
-            handleUpdateRoom();
-          }}
-        />
+      <View style={styles.container2}>
+        <ScrollView>
+          <View style={styles.buttonC}>
+            {(user.rol === 'admin' || user.rol === 'maestro')&& (
+              <TouchableOpacity
+                style={styles.button}
+                buttonColor='#6a9eda'
+                mode="contained"
+                onPress={toggleModal}
+              >
+                <Icon name="add" size={30} color="white" />
+              </TouchableOpacity>
+            )}
+          </View>
+          <AddRomView
+            isVisible={isModalVisible}
+            closeModal={() => {
+              toggleModal();
+              handleUpdateRoom();
+            }}
+          />
 
-        {user.rol === 'admin' &&(
-        <FlatList
-          data={roomsAdmin}
-          key={`roomsAdmin-${roomsAdmin.id}`}
-          renderItem={({ item }) => (
-            <RoomCardAdmin
-            key={roomsAdmin.id}
-              roomsAdmin={item}
-              navigation={navigation}
-              handleRoomDelete={handleRoomDelete}
-            />
+          {user.rol === 'admin' && (
+            <View style={styles.roomContainer}>
+                {roomsAdmin.map(room => (
+                  <RoomCardAdmin
+                    key={room.id.toString()}
+                    room={room}
+                    navigation={navigation}
+                    handleRoomDelete={handleRoomDelete}
+                  />
+                ))}
+                {roomsAdmin.length === 0 && <Text>No hay habitaciones disponibles</Text>}
+          </View>
           )}
-        />
-        )}
-        {(user.rol === 'admin' && !roomsAdmin.length === 0) && (<Text>No hay Salas disponibles</Text>)}
-
-       {user.rol === 'maestro' &&(
-        <FlatList
-          data={roomsMaster}
-          key={`roomsMaster-${roomsMaster.id}`}
-          renderItem={({ item }) => (
-            <RoomCardMaster
-            key={roomsMaster.id}
-              room={item}
-              navigation={navigation}
-              handleRoomDelete={handleRoomDelete}
-            />
+          
+          {user.rol === 'maestro' && (
+            <View style={styles.roomContainer}>
+                {roomsMaster.map(room => (
+                  <RoomCard
+                    key={room.id.toString()}
+                    room={room}
+                    navigation={navigation}
+                    handleRoomDelete={handleRoomDelete}
+                  />
+                ))}
+                {roomsMaster.length === 0 && <Text>No hay habitaciones disponibles</Text>}
+          </View>
           )}
-        />
-        )}
-        {(user.rol === 'maestro' && !roomsMaster.length === 0) && (<Text>No hay Salas disponibles</Text>)}
-
-        {user.rol === 'usuario' &&(
-        <FlatList
-          data={roomsUser}
-          key={`roomsUser-${roomsUser.id}`}
-          renderItem={({ item }) => (
-            <RoomCardUser
-            key={roomsUser.id}
-              room={item}
-              navigation={navigation}
-              handleRoomDelete={handleRoomDelete}
-            />
+          
+          {user.rol === 'usuario' && (
+            <View style={styles.roomContainer}>
+                {roomsUser.map(room => (
+                  <RoomCard
+                    key={room.id.toString()}
+                    room={room}
+                    navigation={navigation}
+                    handleRoomDelete={handleRoomDelete}
+                  />
+                ))}
+                {roomsUser.length === 0 && <Text>No hay habitaciones disponibles</Text>}
+          </View>
           )}
-        />
-        )}
-        {(user.rol === 'usuario' && !roomsUser.length === 0) && (<Text>No hay Salas disponibles</Text>)}
-
+          
+        </ScrollView>
+      </View>
       </View> 
-      
-    );
-
-  }
+  );
+}
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1
+      flex: 1,
+    backgroundColor: '#9E78EE'
+  },
+  container2: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
+  },
+  roomContainer: {
+    flex: 1,
+  },
+  buttonC: {
+    position: 'relative', // Cambiar a relativo
+    justifyContent: 'center', // Centrar el botón verticalmente
+    alignItems: 'center', // Centrar el botón horizontalmente
+    marginTop: 20, // Espacio superior
     },
     button: {
-      marginTop: 10,
-      width: 70,
-      height: 70,
-      justifyContent:'center',
-      marginLeft: '30%',
-      marginRight: 10
+      backgroundColor: '#6a9eda',
+    borderRadius: 999,
+      width: 50,
+      height: 50,
+      justifyContent: 'center',
+      alignItems: 'center',
+      elevation: 10,
     },
-  })
+  });
 
-  export default RoomsView
+  export default RoomsView;

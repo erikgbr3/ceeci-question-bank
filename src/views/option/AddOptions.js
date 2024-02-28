@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
-import { Button, TextInput } from 'react-native-paper';
+import { Text, TextInput, TouchableOpacity, View, StyleSheet} from "react-native";
+import { Button } from 'react-native-paper';
 import Modal from 'react-native-modal';
 import OptionController from "../../controllers/optionController";
 
@@ -72,13 +72,13 @@ const AddOptionView = ({isVisible, questionId, closeModal}) => {
         <View style={styles.haku}>
           <TouchableOpacity onPress={createOption}>
               <Button style={styles.button} buttonColor='#6a9eda'>
-                <Text>Crear</Text>
+                <Text style={styles.buttonText}>Crear</Text>
               </Button>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={handlePressCloseModal}>
             <Button style={styles.button} buttonColor='#f45572'>
-              <Text>Cancelar</Text>
+              <Text style={styles.buttonText}>Cancelar</Text>
             </Button>
           </TouchableOpacity>
         </View>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: 'white',
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 20,
     alignItems: 'center',
   },
   haku: {
@@ -105,20 +105,25 @@ const styles = StyleSheet.create({
     marginBottom: 4
   },
   input: {
-    width: '100%',
+    width: '90%',
     height: 40,
     fontSize: 18,
     borderColor: 'rgba(198,198,199, 0.5)',
     borderWidth: 1,
     borderRadius: 16,
     marginBottom: 10,
+    marginTop: 3,
     padding: 10,
+    textAlign: 'center'
   },
   button: {
-    width: 'auto',
+    width: 90,
     marginLeft: 8,
     marginRight: 8  
   },  
+  buttonText: {
+    color: 'black'
+  }, 
 })
 
 export default AddOptionView;
