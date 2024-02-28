@@ -122,7 +122,7 @@ import RoomCardUser from "./getRoomsUser";
           {user.rol === 'maestro' && (
             <View style={styles.roomContainer}>
                 {roomsMaster.map(room => (
-                  <RoomCard
+                  <RoomCardMaster
                     key={room.id.toString()}
                     room={room}
                     navigation={navigation}
@@ -136,7 +136,7 @@ import RoomCardUser from "./getRoomsUser";
           {user.rol === 'usuario' && (
             <View style={styles.roomContainer}>
                 {roomsUser.map(room => (
-                  <RoomCard
+                  <RoomCardUser
                     key={room.id.toString()}
                     room={room}
                     navigation={navigation}

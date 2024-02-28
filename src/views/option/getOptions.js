@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, {useState} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
 import OptionController from '../../controllers/optionController';
 
 const OptionCard = ({ option, navigation }) => {
@@ -60,50 +60,42 @@ const OptionCard = ({ option, navigation }) => {
 
   return (
     <View>
+      <View style={styles.card}>
+        <Text>{option.questionId}</Text>
+      </View>
       <TouchableOpacity onPress={handleEdit}>
         <View style={styles.card}>
-          <View style={styles.titleC}>
-            <Text style={styles.title}>Opcion 1: {renderOptionField('option1')}</Text>
-            <Image
-                source={require('../../../assets/x.png')}
-                style={styles.image}
-            />
-          </View>
-      </View>
+          {renderOptionField('option1')}
+        </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleEdit}>
         <View style={styles.card}>
+          {renderOptionField('option2')}
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleEdit}>
+        <View style={styles.card}>
+          {renderOptionField('option3')}
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleEdit}>
+        <View style={styles.card}>
+          {renderOptionField('correctA')}
+        </View>
+      </TouchableOpacity>
+
+      {/* <TouchableOpacity >
+        <View style={styles.card}>
           <View style={styles.titleC}>
-          <Text style={styles.title}>Opcion 2: {renderOptionField('option2')}</Text>
+          <Text style={styles.title}>Opcion 2: {option.option2}</Text>
           <Image
               source={require('../../../assets/x.png')}
               style={styles.image}
           />
         </View>
       </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleEdit}>
-        <View style={styles.card}>
-          <View style={styles.titleC}>
-          <Text style={styles.title}>Opcion 3: {renderOptionField('option3')}</Text>
-          <Image
-              source={require('../../../assets/x.png')}
-              style={styles.image}
-          />
-        </View>
-      </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleEdit}>
-        <View style={styles.card}>
-          <View style={styles.titleC}>
-          <Text style={styles.title}>Respuesta Correcta: {renderOptionField('correctA')}</Text>
-          <Image
-              source={require('../../../assets/y.png')}
-              style={styles.image}
-          />
-        </View>
-      </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
       {isEditing && (
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={handleCancel}>
@@ -123,6 +115,60 @@ const OptionCard = ({ option, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  card: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    margin: 10,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  userId: {
+    marginTop: 5,
+    color: '#555',
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 5,
+    marginTop: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  saveButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    margin: 10,
+    alignItems: 'center',
+    width: 100
+  },
+  saveButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  cancelButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    margin: 10,
+    alignItems: 'center',
+    width: 100
+  },
+  cancelButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  
+});
+
+/* const styles = StyleSheet.create({
   card: {
     backgroundColor: '#b8e4ff',
     borderRadius: 13,
@@ -179,6 +225,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   
-});
+}); */
 
 export default OptionCard;

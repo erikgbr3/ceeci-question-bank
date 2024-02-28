@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import DeleteQuestionView from './deleteQuestion';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import OptionController from '../../controllers/optionController';
 
 const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -138,6 +140,33 @@ const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
 
 const styles = StyleSheet.create({
   card: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    margin: 10,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  userId: {
+    marginTop: 5,
+    color: '#555',
+  },
+  options: {
+    fontSize: 16
+  },
+  textOption: {
+    marginTop: 5,
+    fontSize: 15,
+    color: '#555',
+  },
+});
+
+
+/* const styles = StyleSheet.create({
+  card: {
     backgroundColor: '#84b6f4',
     borderRadius: 13,
     padding: 2,
@@ -175,6 +204,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#555',
   },
-});
+}); */
 
 export default QuestionCard;

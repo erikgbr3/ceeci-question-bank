@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
   container2:{
     flex: 1,
     backgroundColor: 'white',
-    borderTopLeftRadius: '22',
-    borderTopRightRadius: '22',
+    borderTopLeftRadius: 22,
+    borderTopRightRadius: 22,
   },
   buttonC: {
     position: 'relative', // Cambiar a relativo

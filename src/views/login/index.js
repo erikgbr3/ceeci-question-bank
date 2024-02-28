@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Platform, TouchableOpacity, Alert, Image } from "react-native"
-import { useState } from "react";
 import { FontAwesome } from '@expo/vector-icons';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
   },
   loginImageContainer2:{
     alignItems: 'center',
-    //borderTopRightRadius: '60',
+    borderTopRightRadius: 60,
     backgroundColor: 'white',
   },
   loginImage:{
@@ -130,13 +129,13 @@ const styles = StyleSheet.create({
     height: '15%',
     backgroundColor: color.primary,
     overflow: 'hidden',
-    //borderBottomLeftRadius: '60', 
+    borderBottomLeftRadius: 60, 
   },
   border2: {
     width: '100%',
     height: '15%',
     backgroundColor: color.primary,
-    //borderTopRightRadius: '50',
+    borderTopRightRadius: 50,
   },
   loginContainer: {
     backgroundColor: color.primary, 
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
   },
   loginContainer2: {
     backgroundColor: 'white', 
-    //borderBottomLeftRadius: '60',
+    borderBottomLeftRadius: 60,
     height: "50%",
     width: "100%",
     flex: 1,
