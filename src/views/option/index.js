@@ -88,7 +88,7 @@ const OptionsView = ({navigation, route}) => {
       {options.length === 0 && 
         <View style={styles.ContainerV}>
           <Text style={styles.text}>
-            No hay preguntas disponibles
+            No hay opciones disponibles
           </Text>
           <View style={styles.imageContainer}>
             <Image

@@ -140,15 +140,24 @@ const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
+    backgroundColor: '#84b6f4',
+    borderRadius: 13,
+    padding: 2,
     margin: 10,
+    alignItems: 'flex-end',
+    marginBottom: 20,
+  },
+  titleC:{
+    top: 10 ,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    marginLeft: 20,
+    width: '60%',
+    fontSize: 17,
   },
   userId: {
     marginTop: 5,
@@ -161,6 +170,16 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 15,
     color: '#555',
+  },
+  image:{
+    width: 50,
+    height: 50,
+  },
+  deleteButton:{
+    backgroundColor: '#f45572',
+    borderRadius: 55,
+    padding: 9,
+    top: 22,
   },
 });
 

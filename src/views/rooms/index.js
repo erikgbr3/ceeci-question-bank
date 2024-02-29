@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, View , Text, TouchableOpacity, ScrollView,} from "react-native";
+import { StyleSheet, View , Text, TouchableOpacity, ScrollView, Image,} from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddRomView from "./addRoom";
@@ -115,7 +115,19 @@ import RoomCardUser from "./getRoomsUser";
                     handleRoomDelete={handleRoomDelete}
                   />
                 ))}
-                {roomsAdmin.length === 0 && <Text>No hay habitaciones disponibles</Text>}
+                {roomsAdmin.length === 0 && 
+                <View style={styles.ContainerV}>
+                  <Text style={styles.text}>
+                    No hay salas disponibles
+                  </Text>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={require('../../../assets/box.gif')}
+                      style={styles.image2}
+                    /> 
+                  </View>
+                </View>
+                }
           </View>
           )}
           
@@ -129,7 +141,18 @@ import RoomCardUser from "./getRoomsUser";
                     handleRoomDelete={handleRoomDelete}
                   />
                 ))}
-                {roomsMaster.length === 0 && <Text>No hay habitaciones disponibles</Text>}
+                {roomsMaster.length === 0 && 
+                <View style={styles.ContainerV}>
+                <Text style={styles.text}>
+                  No hay salas disponibles
+                </Text>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require('../../../assets/box.gif')}
+                    style={styles.image2}
+                  /> 
+                </View>
+              </View>}
           </View>
           )}
           
@@ -143,7 +166,18 @@ import RoomCardUser from "./getRoomsUser";
                     handleRoomDelete={handleRoomDelete}
                   />
                 ))}
-                {roomsUser.length === 0 && <Text>No hay habitaciones disponibles</Text>}
+                {roomsUser.length === 0 && 
+                <View style={styles.ContainerV}>
+                  <Text style={styles.text}>
+                    No hay salas disponibles
+                  </Text>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={require('../../../assets/box.gif')}
+                      style={styles.image2}
+                    /> 
+                  </View>
+                </View>}
           </View>
           )}
           
@@ -181,6 +215,24 @@ import RoomCardUser from "./getRoomsUser";
       justifyContent: 'center',
       alignItems: 'center',
       elevation: 10,
+    },
+    ContainerV: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    text: {
+      marginTop: 30,
+      fontSize: 20,
+      textAlign: 'center',
+      marginBottom: 20,
+    },
+    imageContainer: {
+      position: 'relative',
+    },
+    image2: {
+      width: 250,
+      height: 250,
     },
   });
 

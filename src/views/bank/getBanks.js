@@ -35,9 +35,10 @@ const BankCard = ({ bank, user, navigation, handleBankDelete }) => {
           />
         </View>
         {user.rol === 'maestro' && (
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+        <Switch 
+          style={styles.switch}
+          trackColor={{ false: "black", true: "#77dd77" }}
+          thumbColor={isEnabled ? "white" : "#f4f3f4"}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleEnabled}
           value={isEnabled}
@@ -89,6 +90,10 @@ const styles = StyleSheet.create({
     padding: 9,
     top: 22,
   },
+  switch:{
+    top: 22,
+    right: 210,
+  }
 });
 
 export default BankCard;

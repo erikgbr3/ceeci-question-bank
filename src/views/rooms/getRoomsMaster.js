@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Switch, Image } from 'react-native';
 import DeleteRoomView from './deleteRoom';
 import RoomController from '../../controllers/roomControler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const RoomCardMaster = ({ room, navigation, handleRoomDelete }) => {
 
@@ -27,18 +28,26 @@ const RoomCardMaster = ({ room, navigation, handleRoomDelete }) => {
       onPress={() => navigation.navigate('Bancos', { roomId: room.id, room: room.name })}
     >
       <View style={styles.card}>
-        <Text style={styles.title}>{room.id}</Text>
-        <Text style={styles.title}>{room.name}</Text>
-        <Text style={styles.userId}>User ID: {room.userId}</Text>
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleEnabled}
-          value={isEnabled}
-        />
-        <TouchableOpacity onPress={toggleModal}>
-          <Text style={styles.deleteButton}>Eliminar</Text>
+        <View style={styles.titleC}>
+          <Text style={styles.title}>{room.name}</Text>
+            <Image
+                source={require('../../../assets/materia2.png')}
+                style={styles.image}
+            />
+            
+          </View>
+          <Switch
+              style={styles.switch}
+              trackColor={{ false: "black", true: "#77dd77" }}
+              thumbColor={isEnabled ? "white" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleEnabled}
+              value={isEnabled}
+          />      
+        <TouchableOpacity 
+            style={styles.deleteButton} 
+            onPress={toggleModal}>
+          <Icon name="delete" size={24} color="white" />
         </TouchableOpacity>
       </View>
       <DeleteRoomView 
@@ -53,24 +62,39 @@ const RoomCardMaster = ({ room, navigation, handleRoomDelete }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    backgroundColor: '#b0c2f2',
+    borderRadius: 13,
     padding: 10,
     margin: 10,
+    alignItems: 'flex-end',
+  },
+  image:{
+    width: 50,
+    height: 50,
+  },
+  titleC:{
+    top: 10 ,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
-    fontSize: 18,
+    marginLeft: 20,
+    width: '60%',
+    fontSize: 20,
     fontWeight: 'bold',
   },
-  userId: {
-    marginTop: 5,
-    color: '#555',
-  },
   deleteButton: {
-    color: 'red',
-    marginTop: 5,
+    backgroundColor: '#f45572',
+    borderRadius: 55,
+    padding: 9,
+    top: 22,
   },
+  switch:{
+    top: 22,
+    right: 210,
+  }
 });
 
 export default RoomCardMaster;

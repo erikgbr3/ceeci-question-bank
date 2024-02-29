@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
+import { Button } from 'react-native-paper';
 import OptionController from '../../controllers/optionController';
 
 const OptionCard = ({ option, navigation }) => {
@@ -55,32 +56,53 @@ const OptionCard = ({ option, navigation }) => {
         />
       );
     }
-    return <Text style={styles.userId}>{field}: {editedOption[field]}</Text>;
+    return <Text style={styles.title}>{editedOption[field]}</Text>;
   };
 
   return (
     <View>
-      <View style={styles.card}>
-        <Text>{option.questionId}</Text>
-      </View>
       <TouchableOpacity onPress={handleEdit}>
         <View style={styles.card}>
-          {renderOptionField('option1')}
+          <View style={styles.titleC}>
+            {renderOptionField('option1')}
+            <Image
+                source={require('../../../assets/x.png')}
+                style={styles.image}
+            />
+          </View>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleEdit}>
         <View style={styles.card}>
-          {renderOptionField('option2')}
+          <View style={styles.titleC}>
+            {renderOptionField('option2')}
+            <Image
+                source={require('../../../assets/x.png')}
+                style={styles.image}
+            />
+          </View>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleEdit}>
         <View style={styles.card}>
-          {renderOptionField('option3')}
+          <View style={styles.titleC}>
+            {renderOptionField('option3')}
+            <Image
+                source={require('../../../assets/x.png')}
+                style={styles.image}
+            />
+          </View>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleEdit}>
         <View style={styles.card}>
-          {renderOptionField('correctA')}
+          <View style={styles.titleC}>
+            {renderOptionField('correctA')}
+            <Image
+                source={require('../../../assets/y.png')}
+                style={styles.image}
+            />
+          </View>
         </View>
       </TouchableOpacity>
 
@@ -99,14 +121,14 @@ const OptionCard = ({ option, navigation }) => {
       {isEditing && (
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={handleCancel}>
-            <View style={styles.cancelButton}>
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </View>
+            <Button style={styles.button} buttonColor='#6a9eda'>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </Button>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleSave}>
-            <View style={styles.saveButton}>
-              <Text style={styles.saveButtonText}>Save</Text>
-            </View>
+            <Button style={styles.button} buttonColor='#f45572'>
+              <Text style={styles.buttonText}>Save</Text>
+            </Button>
           </TouchableOpacity>
         </View>
       )}
@@ -116,56 +138,51 @@ const OptionCard = ({ option, navigation }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    backgroundColor: '#b8e4ff',
+    borderRadius: 13,
     padding: 10,
     margin: 10,
+    minHeight: '18%',
+    justifyContent: 'center',
+  },
+  titleC:{
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
+    width: '80%',
     fontSize: 18,
     fontWeight: 'bold',
+    paddingLeft: 12,    
   },
-  userId: {
-    marginTop: 5,
-    color: '#555',
+  image: {
+    width: 50,
+    height: 50,
   },
   textInput: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 5,
-    marginTop: 5,
+    height: '100%',
+    width: '80%',
+    borderWidth: .3,
+    fontWeight: 'bold',
+    borderColor: 'white',
+    borderRadius: 12,
+    paddingLeft: 12,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center'
   },
-  saveButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    margin: 10,
-    alignItems: 'center',
-    width: 100
-  },
-  saveButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  cancelButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    margin: 10,
-    alignItems: 'center',
-    width: 100
-  },
-  cancelButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  
+  button: {
+    width: 90,
+    marginLeft: 8,
+    marginRight: 8,
+    marginTop: 10,
+  },  
+  buttonText: {
+    color: 'black',
+  }, 
 });
 
 /* const styles = StyleSheet.create({
