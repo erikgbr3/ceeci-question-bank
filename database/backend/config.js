@@ -1,5 +1,5 @@
 const BackendConfig = {
-  url: 'http://10.111.65.142:3000'
+  url: 'http://10.111.65.119:3000'
 }
 
 export default BackendConfig;

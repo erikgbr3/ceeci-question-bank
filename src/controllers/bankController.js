@@ -40,8 +40,8 @@ const BankController = {
 
   updateEnabled: async (id, enabled) => {
     try {
-      const newRoom = await Bank.updateEnabledBank(id, enabled);
-      return newRoom;
+      const updateBank = await Bank.updateEnabledBank(id, enabled);
+      return updateBank;
     } catch (error) {
       throw new Error('Error al crear la sala: ' + error.message);
     }
