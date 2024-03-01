@@ -1,33 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import OptionController from '../../controllers/optionController';
 import AnswerController from '../../controllers/answerController';
+
+const shuffleArray = (array) => {
+  const shuffledArray = array.slice();
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+};
 
 const QuestionCardUser = ({ question, user }) => {
   const [options, setOptions] = useState([]);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState({});
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [isAnswerSaved, setIsAnswerSaved] = useState(false);
 
   const optionLabels = ['A', 'B', 'C', 'D'];
 
   const shuffleOptions = (option) => {
-    const optionAttributes = ['option1', 'option2', 'option3', 'correctA'];
-    for (let i = optionAttributes.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [option[optionAttributes[i]], option[optionAttributes[j]]] = [
-        option[optionAttributes[j]],
-        option[optionAttributes[i]],
-      ];
-    }
-    return option;
+    const shuffledOption = {};
+    const keys = Object.keys(option).filter(key => key.startsWith('option') || key.startsWith('correct'));
+    shuffleArray(keys).forEach((key, index) => {
+      shuffledOption[`option${index + 1}`] = option[key];
+    });
+    shuffledOption.id = option.id; 
+    return shuffledOption;
   };
 
   const fetchOptions = async (questionId) => {
     try {
       const optionsData = await OptionController.getAllOptions(questionId);
-      const shuffledOptions = optionsData.map((option) => shuffleOptions(option));
-      setOptions(shuffledOptions);
+      setOptions(optionsData.map(option => shuffleOptions(option)));
     } catch (error) {
       console.error('Error fetching options:', error);
     }
@@ -38,54 +45,29 @@ const QuestionCardUser = ({ question, user }) => {
   };
 
   const selectOption = (index, property) => {
-      const newSelectedOptions = {};
-
-    // Deselect previously selected options
-      Object.keys(selectedOption).forEach((key) => {
-        if (key !== index.toString()) {
-          newSelectedOptions[key] = {};
-        }
-      });
-
-      // Select the new option
-      newSelectedOptions[index.toString()] = { [property]: true };
-
-      console.log(newSelectedOptions);
-
-      setSelectedOption(newSelectedOptions);
+    const selectedValue = options[index][property];
+    console.log('Selected option value:', selectedValue);
+    setSelectedOptions((prevSelectedOptions) => ({
+      ...prevSelectedOptions,
+      [index]: selectedValue,
+    }));
   };
 
   const saveAnswer = async () => {
-    if (!selectedOption) {
-      console.warn('No option selected');
-      return;
-    }
-
-    const selectedOptionIndex = Object.keys(selectedOption).find(
-      (key) =>
-        selectedOption[key][optionLabels[0]] ||
-        selectedOption[key][optionLabels[1]] ||
-        selectedOption[key][optionLabels[2]] ||
-        selectedOption[key][optionLabels[3]]
-    );
-
-    if (selectedOptionIndex === undefined) {
-      console.warn('No option selected');
-      return;
-    }
-
-    const selectedOptionValue = Object.keys(selectedOption[selectedOptionIndex]).find(
-      (key) => selectedOption[selectedOptionIndex][key]
-    );
-
     try {
-      await AnswerController.createAnswer(
-        user.id,
-        question.id,
-        options[selectedOptionIndex].id,
-        selectedOptionValue
-      );
-      console.log('Answer saved successfully');
+       // Obtener el id de la opción seleccionada
+       const selectedOption = options.find((option, index) => selectedOptions[index]);
+       if (!selectedOption) {
+         console.error('No option selected');
+         return;
+       }
+       const optionId = selectedOption.id;
+       const selection = selectedOptions[options.findIndex((option, index) => selectedOptions[index])];
+
+    // Guardar la resp
+      await AnswerController.createAnswer(user.id, question.id, optionId, selection);
+      console.log('Respuesta Gurdada');
+      setIsAnswerSaved(true);
     } catch (error) {
       console.error('Error saving answer:', error);
     }
@@ -103,56 +85,31 @@ const QuestionCardUser = ({ question, user }) => {
         <TouchableOpacity onPress={toggleDropdown}>
           <View>
             <Text style={styles.title}>{question.textQuestion}</Text>
-            <Text>Bank ID: {question.bankId}</Text>
           </View>
         </TouchableOpacity>
         {isDropdownOpen && (
           <View style={styles.optionsContainer}>
-            {options.map((option, index) => (
+          {options.map((option, index) => (
               <View key={index}>
-                <TouchableOpacity onPress={() => selectOption(index, optionLabels[0])}>
-                  <Text
-                    style={[
-                      styles.textOption,
-                      { fontWeight: selectedOption[index]?.A ? 'bold' : 'normal' },
-                    ]}
-                  >
-                    {optionLabels[0]}: {option.option1}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => selectOption(index, optionLabels[1])}>
-                  <Text
-                    style={[
-                      styles.textOption,
-                      { fontWeight: selectedOption[index]?.B ? 'bold' : 'normal' },
-                    ]}
-                  >
-                    {optionLabels[1]}: {option.option2}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => selectOption(index, optionLabels[2])}>
-                  <Text
-                    style={[
-                      styles.textOption,
-                      { fontWeight: selectedOption[index]?.C ? 'bold' : 'normal' },
-                    ]}
-                  >
-                    {optionLabels[2]}: {option.option3}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => selectOption(index, optionLabels[3])}>
-                  <Text
-                    style={[
-                      styles.textOption,
-                      { fontWeight: selectedOption[index]?.D ? 'bold' : 'normal' },
-                    ]}
-                  >
-                    {optionLabels[3]}: {option.correctA}
-                  </Text>
-                </TouchableOpacity>
+                {optionLabels.map((label, labelIndex) => (
+                  <TouchableOpacity key={labelIndex} onPress={() => selectOption(index, `option${labelIndex + 1}`)}>
+                    <Text
+                      style={[
+                        styles.textOption,
+                        { fontWeight: selectedOptions[index] === option[`option${labelIndex + 1}`] ? 'bold' : 'normal' },
+                      ]}
+                    >
+                      {label}: {option[`option${labelIndex + 1}`]}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
               </View>
             ))}
-            <Button title="Guardar" onPress={saveAnswer} disabled={!selectedOption} />
+            <View style={styles.saveC} >
+              <TouchableOpacity style={styles.save} onPress={saveAnswer} disabled={isAnswerSaved}>
+                    <Text style={styles.saveT} >Guardar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       </View>
@@ -162,27 +119,50 @@ const QuestionCardUser = ({ question, user }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    backgroundColor: '#b8e4ff',
+    borderRadius: 13,
     padding: 10,
     margin: 10,
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center'
   },
   optionsContainer: {
     marginTop: 10,
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
+    borderTopColor: 'white',
     paddingTop: 10,
   },
   textOption: {
     marginTop: 5,
     fontSize: 15,
-    color: '#555',
+    color: 'black',
+    borderWidth: .3,
+    borderColor: 'white',
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 10
   },
+  saveC:{
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  save:{
+    backgroundColor: '#a3ffac',
+    alignItems: 'center',
+    width: '60%',
+    borderRadius: 12,
+    borderWidth: .3,
+    borderColor: 'black'
+  },
+  saveT:{
+    fontSize: 16,
+    padding: 8,
+    color: 'black'
+  }
 });
 
 /* const styles = StyleSheet.create({

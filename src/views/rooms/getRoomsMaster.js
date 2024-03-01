@@ -6,7 +6,7 @@ import RoomController from '../../controllers/roomControler';
 const RoomCardMaster = ({ room, navigation, handleRoomDelete }) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(room.ennabled);
+  const [isEnabled, setIsEnabled] = useState(room.enabled);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
