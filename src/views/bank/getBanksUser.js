@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
+import { Image, View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
 import DeleteBankView from './deleteBank';
 import BankController from '../../controllers/bankController';
 
@@ -11,9 +11,13 @@ const BankCardUser = ({ bank, user, navigation }) => {
       onPress={() => navigation.navigate('Preguntas', { bankId: bank.id, bank: bank.name })}
     >
       <View style={styles.card}>
-      <Text style={styles.title}>{bank.id}</Text>
-      <Text style={styles.title}>{bank.name}</Text>
-      <Text style={styles.userId}>Room ID: {bank.roomId}</Text>
+        <View  style={styles.titleC}>
+          <Text style={styles.title}>{bank.name}</Text>
+          <Image
+                source={require('../../../assets/materia2.png')}
+                style={styles.image}
+          />
+        </View>
       </View>
     </TouchableOpacity>
     
@@ -22,23 +26,27 @@ const BankCardUser = ({ bank, user, navigation }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    backgroundColor: '#b0c2f2',
+    borderRadius: 13,
     padding: 10,
     margin: 10,
+    alignItems: 'flex-end',
+  },
+  image:{
+    width: 50,
+    height: 50,
+  },
+  titleC:{
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
-    fontSize: 18,
+    marginLeft: 20,
+    width: '60%',
+    fontSize: 20,
     fontWeight: 'bold',
-  },
-  userId: {
-    marginTop: 5,
-    color: '#555',
-  },
-  keyRoom: {
-    marginTop: 5,
-    color: '#555',
   },
 });
 

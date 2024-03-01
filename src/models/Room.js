@@ -21,7 +21,7 @@ class Room {
       const data = await response.json();
       return data;
     } catch (error) {
-      throw new Error('Error al iniciar sesión: ' + error.message);
+      throw new Error('Error al crear sala: ' + error.message);
     }
   }
 
@@ -127,7 +127,7 @@ class Room {
       const room = await response.json();
       return room;
     } catch (error) {
-      throw new Error('Error al iniciar sesión: ' + error.message);
+      throw new Error('Error al actulizar Enabled en la sala: ' + error.message);
     }
   }
   

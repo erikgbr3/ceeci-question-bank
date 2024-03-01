@@ -31,14 +31,14 @@ const RoomCardMaster = ({ room, navigation, handleRoomDelete }) => {
         <View style={styles.titleC}>
           <Text style={styles.title}>{room.name}</Text>
             <Image
-                source={require('../../../assets/materia2.png')}
+                source={require('../../../assets/3771417.png')}
                 style={styles.image}
             />
             
           </View>
           <Switch
               style={styles.switch}
-              trackColor={{ false: "black", true: "#77dd77" }}
+              trackColor={{ false: "#767577", true: "#77dd77" }}
               thumbColor={isEnabled ? "white" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleEnabled}
@@ -62,7 +62,7 @@ const RoomCardMaster = ({ room, navigation, handleRoomDelete }) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#b0c2f2',
+    backgroundColor: '#b8e4ff',
     borderRadius: 13,
     padding: 10,
     margin: 10,

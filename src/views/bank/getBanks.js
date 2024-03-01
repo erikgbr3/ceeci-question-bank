@@ -37,7 +37,7 @@ const BankCard = ({ bank, user, navigation, handleBankDelete }) => {
         {user.rol === 'maestro' && (
         <Switch 
           style={styles.switch}
-          trackColor={{ false: "black", true: "#77dd77" }}
+          trackColor={{ false: "#767577", true: "#77dd77" }}
           thumbColor={isEnabled ? "white" : "#f4f3f4"}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleEnabled}

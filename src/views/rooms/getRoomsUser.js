@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const RoomCardUser = ({ room, navigation }) => {
 
@@ -8,9 +8,13 @@ const RoomCardUser = ({ room, navigation }) => {
       onPress={() => navigation.navigate('Bancos', { roomId: room.id, room: room.name })}
     >
       <View style={styles.card}>
-      <Text style={styles.title}>{room.id}</Text>
-      <Text style={styles.title}>{room.name}</Text>
-      <Text style={styles.userId}>User ID: {room.userId}</Text>
+        <View style={styles.titleC}>
+          <Text style={styles.title}>{room.name}</Text>
+          <Image
+                source={require('../../../assets/3771417.png')}
+                style={styles.image}
+            />
+        </View>
       </View>
     </TouchableOpacity>
     
@@ -19,11 +23,16 @@ const RoomCardUser = ({ room, navigation }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    backgroundColor: '#b8e4ff',
+    borderRadius: 13,
     padding: 10,
     margin: 10,
+    alignItems: 'flex-end',
+    
+  },
+  image:{
+    width: 50,
+    height: 50
   },
   title: {
     fontSize: 18,
@@ -33,9 +42,17 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: '#555',
   },
-  keyRoom: {
-    marginTop: 5,
-    color: '#555',
+  titleC:{
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    marginLeft: 20,
+    width: '60%',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 

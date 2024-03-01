@@ -6,10 +6,12 @@ import AddQuestionView from "./AddQuestions";
 import QuestionCard from "./getQuestions";
 import QuestionController from "../../controllers/questionController";
 import { AuthContext } from "../../context/AuthContext";
+import QuestionCardUser from "./getQuestionsUser";
 
 const QuestionsView = ({navigation, route}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [questions, setQuestions] = useState([]);
+  const [questionsUser, setQuestionsUser] = useState([]);
   const [isDataUpdated, setDataUpdated] = useState(false);
 
   const { user } = useContext(AuthContext);
@@ -23,9 +25,25 @@ const QuestionsView = ({navigation, route}) => {
     }
   };
 
+  const fetchQuestionsUser = async (bankId, enabled) => {
+    try {
+      const questionData = await QuestionController.getAllQuestionsUser(bankId, enabled);
+      const filteredQuestions = questionData.filter(question => question.enabled === true);
+      setQuestionsUser(filteredQuestions);
+    } catch (error) {
+      console.error('Error al buscar los bancos:', error);
+    }
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       fetchQuestions(route.params.bankId);
+    }, [])
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchQuestionsUser(route.params.bankId, true);
     }, [])
   );
 
@@ -82,6 +100,8 @@ const QuestionsView = ({navigation, route}) => {
           handleUpdateQuestion();
       }}
       />
+
+      {(user.rol === 'admin' || user.rol === 'maestro') && (
         <View style={styles.questionContainer}>
               {questions.map(question =>(
                 <QuestionCard
@@ -107,6 +127,36 @@ const QuestionsView = ({navigation, route}) => {
                 </View>
                 }
         </View>
+      )}
+        
+        {user.rol === 'usuario' && (
+          <View style={styles.questionContainer}>
+              {questionsUser.map(question =>(
+                <QuestionCardUser
+                  key={question.id.toString()}
+                  question={question}
+                  user={user}
+                  navigation={navigation}
+                  handleQuestionDelete={handleQuestionDelete}
+                  style={styles.questionCard} 
+                />
+              ))}
+                {questionsUser == 0 && 
+                  <View style={styles.ContainerV}>
+                  <Text style={styles.text}>
+                    No hay preguntas disponibles
+                  </Text>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={require('../../../assets/cat3.gif')}
+                      style={styles.image2}
+                    /> 
+                  </View>
+                </View>
+                }
+        </View>
+        )}
+        
       </ScrollView>
     </View>
     </View>

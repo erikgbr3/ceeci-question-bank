@@ -51,8 +51,8 @@ const RoomController = {
 
   updateEnabled: async (id, enabled) => {
     try {
-      const newRoom = await Room.updateEnabledRoom(id, enabled);
-      return newRoom;
+      const updateRoom = await Room.updateEnabledRoom(id, enabled);
+      return updateRoom;
     } catch (error) {
       throw new Error('Error al crear la sala: ' + error.message);
     }

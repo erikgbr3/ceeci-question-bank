@@ -113,7 +113,7 @@ class Bank {
       const room = await response.json();
       return room;
     } catch (error) {
-      throw new Error('Error al iniciar sesión: ' + error.message);
+      throw new Error('Error al actualizar Enabled en el banco: ' + error.message);
     }
   }
   
