@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Switch } from 'react-native';
 import DeleteQuestionView from './deleteQuestion';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import OptionController from '../../controllers/optionController';
 import QuestionController from '../../controllers/questionController';
 
 const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
@@ -40,11 +38,13 @@ const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
         </View>
         {user.rol === 'maestro' && (
         <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+          style={styles.switch}
+          trackColor={{ false: "#767577", true: "#77dd77" }}
+          thumbColor={isEnabled ? "white" : "#f4f3f4"}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleEnabled}
           value={isEnabled}
+          animated={false}
         />
       )}
       <TouchableOpacity style={styles.deleteButton} onPress={toggleModal}>
@@ -65,14 +65,24 @@ const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    backgroundColor: '#84b6f4',
+    borderRadius: 13,
     padding: 10,
     margin: 10,
+    alignItems: 'flex-end',
+    marginBottom: 20,
+  },
+  titleC:{
+    top: 10 ,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
-    fontSize: 18,
+    marginLeft: 20,
+    width: '60%',
+    fontSize: 17,
     fontWeight: 'bold',
   },
   titleC:{
@@ -98,48 +108,24 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#555',
   },
-});
-
-
-/* const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#84b6f4',
-    borderRadius: 13,
-    padding: 2,
-    margin: 10,
-    alignItems: 'flex-end',
-    marginBottom: 20,
-  },
   image:{
     width: 50,
     height: 50,
-  },
-  titleC:{
-    top: 10 ,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  title: {
-    marginLeft: 20,
-    width: '60%',
-    fontSize: 17,
   },
   deleteButton:{
     backgroundColor: '#f45572',
     borderRadius: 55,
     padding: 9,
+    top: 20,
+  },
+  switch:{
     top: 22,
-  },
-  options: {
-    fontSize: 16
-  },
-  textOption: {
-    marginTop: 5,
-    fontSize: 15,
-    color: '#555',
-  },
-}); */
+    right: '83%',
+    transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
+  }
+});
+
+
+
 
 export default QuestionCard;

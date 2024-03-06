@@ -1,14 +1,24 @@
 // CustomMenu.js
-import React from 'react';
+import React ,{useContext}from 'react';
 import { Modal, View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import admin from '../assets/admin.png';
 import estudiante from '../assets/estudiante.png';
 import maestro from '../assets/maestro.png';
+import { AuthContext } from '../src/context/AuthContext';
 
 const CustomMenu = ({ visible, onDismiss, actions }) => {
 
+  const {user} = useContext(AuthContext);
+
   const obtenerImagen = () => {
-    return admin; // Cambia esto según tu necesidad
+    if (user.rol === 'admin'){
+      return admin; 
+    } else if (user.rol === 'maestro'){
+      return maestro;
+    } else if (user.rol === 'usuario') {
+      return estudiante;
+    }
+    // Cambia esto según tu necesidad
   };
 
   return (

@@ -35,12 +35,14 @@ const BankCard = ({ bank, user, navigation, handleBankDelete }) => {
           />
         </View>
         {user.rol === 'maestro' && (
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+        <Switch 
+          style={styles.switch}
+          trackColor={{ false: "#767577", true: "#77dd77" }}
+          thumbColor={isEnabled ? "white" : "#f4f3f4"}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleEnabled}
           value={isEnabled}
+          animated={false}
         />
       )}
       <TouchableOpacity style={styles.deleteButton} onPress={toggleModal}>
@@ -87,8 +89,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f45572',
     borderRadius: 55,
     padding: 9,
-    top: 22,
+    top: 20,
   },
+  switch:{
+    top: 22,
+    right: '83%',
+    transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
+  }
 });
 
 export default BankCard;

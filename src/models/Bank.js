@@ -1,7 +1,5 @@
 import BackendConfig from "../../database/backend/config";
 
-// auth.js
-
 class Bank {
   static async newBank( name, roomId ) {
     try {

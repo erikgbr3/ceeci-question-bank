@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
+import { Button } from 'react-native-paper';
 import OptionController from '../../controllers/optionController';
 
 const OptionCard = ({ option, navigation }) => {
@@ -55,58 +56,67 @@ const OptionCard = ({ option, navigation }) => {
         />
       );
     }
-    return <Text style={styles.userId}>{field}: {editedOption[field]}</Text>;
+    return <Text style={styles.title}>{editedOption[field]}</Text>;
   };
 
   return (
     <View>
-      <View style={styles.card}>
-        <Text>{option.questionId}</Text>
-      </View>
       <TouchableOpacity onPress={handleEdit}>
-        <View style={styles.card}>
-          {renderOptionField('option1')}
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleEdit}>
-        <View style={styles.card}>
-          {renderOptionField('option2')}
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleEdit}>
-        <View style={styles.card}>
-          {renderOptionField('option3')}
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleEdit}>
-        <View style={styles.card}>
-          {renderOptionField('correctA')}
-        </View>
-      </TouchableOpacity>
-
-      {/* <TouchableOpacity >
         <View style={styles.card}>
           <View style={styles.titleC}>
-          <Text style={styles.title}>Opcion 2: {option.option2}</Text>
-          <Image
-              source={require('../../../assets/x.png')}
-              style={styles.image}
-          />
+            {renderOptionField('option1')}
+            <Image
+                source={require('../../../assets/x.png')}
+                style={styles.image}
+            />
+          </View>
         </View>
-      </View>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleEdit}>
+        <View style={styles.card}>
+          <View style={styles.titleC}>
+            {renderOptionField('option2')}
+            <Image
+                source={require('../../../assets/x.png')}
+                style={styles.image}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleEdit}>
+        <View style={styles.card}>
+          <View style={styles.titleC}>
+            {renderOptionField('option3')}
+            <Image
+                source={require('../../../assets/x.png')}
+                style={styles.image}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleEdit}>
+        <View style={styles.card}>
+          <View style={styles.titleC}>
+            {renderOptionField('correctA')}
+            <Image
+                source={require('../../../assets/y.png')}
+                style={styles.image}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
 
       {isEditing && (
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={handleCancel}>
-            <View style={styles.cancelButton}>
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </View>
+            <Button style={styles.button} buttonColor='#6a9eda'>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </Button>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleSave}>
-            <View style={styles.saveButton}>
-              <Text style={styles.saveButtonText}>Save</Text>
-            </View>
+            <Button style={styles.button} buttonColor='#f45572'>
+              <Text style={styles.buttonText}>Save</Text>
+            </Button>
           </TouchableOpacity>
         </View>
       )}
@@ -116,115 +126,53 @@ const OptionCard = ({ option, navigation }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    margin: 10,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  userId: {
-    marginTop: 5,
-    color: '#555',
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 5,
-    marginTop: 5,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  saveButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    margin: 10,
-    alignItems: 'center',
-    width: 100
-  },
-  saveButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  cancelButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    margin: 10,
-    alignItems: 'center',
-    width: 100
-  },
-  cancelButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  
-});
-
-/* const styles = StyleSheet.create({
-  card: {
     backgroundColor: '#b8e4ff',
     borderRadius: 13,
     padding: 10,
     margin: 10,
-    minHeight: '20%',
-    justifyContent: 'center'
-  },
-  image: {
-    width: 50,
-    height: 50,
-    bottom: 12
+    minHeight: '18%',
+    justifyContent: 'center',
   },
   titleC:{
-    top: 10 ,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   title: {
-    marginLeft: 20,
-    width: '60%',
+    width: '80%',
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 12
+    paddingLeft: 12,    
+  },
+  image: {
+    width: 50,
+    height: 50,
+  },
+  textInput: {
+    height: '100%',
+    width: '80%',
+    borderWidth: .3,
+    fontWeight: 'bold',
+    borderColor: 'white',
+    borderRadius: 12,
+    paddingLeft: 12,
+    fontSize: 20,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center'
   },
-  saveButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    margin: 10,
-    alignItems: 'center',
-    width: 100
-  },
-  saveButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  cancelButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    margin: 10,
-    alignItems: 'center',
-    width: 100
-  },
-  cancelButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  
-}); */
+  button: {
+    width: 100,
+    marginLeft: 8,
+    marginRight: 8,
+    marginTop: 10,
+  },  
+  buttonText: {
+    color: 'black',
+    fontSize: 20,
+  }, 
+});
 
 export default OptionCard;

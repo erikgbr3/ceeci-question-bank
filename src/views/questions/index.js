@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, View , Image, Text, TouchableOpacity, ScrollView} from "react-native";
+import { StyleSheet, View , Image, Text, TouchableOpacity, ScrollView, RefreshControl} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddQuestionView from "./AddQuestions";
 import QuestionCard from "./getQuestions";
@@ -13,27 +13,31 @@ const QuestionsView = ({navigation, route}) => {
   const [questions, setQuestions] = useState([]);
   const [questionsUser, setQuestionsUser] = useState([]);
   const [isDataUpdated, setDataUpdated] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { user } = useContext(AuthContext);
 
   const fetchQuestions = async (bankId) => {
     try {
       const questionsData = await QuestionController.getAllQuestion(bankId);
+      console.log('Preguntas obtenidas:', questionsData);
       setQuestions(questionsData);
     } catch (error) {
       console.error('Error al buscar las preguntas:', error);
     }
-  };
-
+  }
+  
   const fetchQuestionsUser = async (bankId, enabled) => {
     try {
       const questionData = await QuestionController.getAllQuestionsUser(bankId, enabled);
+      console.log('Preguntas de usuario obtenidas:', questionData);
       const filteredQuestions = questionData.filter(question => question.enabled === true);
       setQuestionsUser(filteredQuestions);
     } catch (error) {
       console.error('Error al buscar los bancos:', error);
     }
   };
+  
 
   useFocusEffect(
     React.useCallback(() => {
@@ -47,8 +51,22 @@ const QuestionsView = ({navigation, route}) => {
     }, [])
   );
 
+  const handleRefresh = async () => {
+    console.log('Refrescando preguntas...');
+    setIsRefreshing(true);
+    try {
+      await fetchQuestions(route.params.bankId);
+      await fetchQuestionsUser(route.params.bankId, true);
+    } catch (error) {
+      console.error('Error al refrescar las preguntas:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   const handleDataUpdate = () => {
     fetchQuestions(route.params.bankId);
+    fetchQuestionsUser(route.params.bankId, true);
     setDataUpdated(false);
   };
 
@@ -59,7 +77,8 @@ const QuestionsView = ({navigation, route}) => {
   };
 
   const handleQuestionDelete = async () => {
-    await fetchQuestions();
+    await fetchQuestions(route.params.bankId);
+    await fetchQuestionsUser(route.params.bankId, true);
     setDataUpdated(true);
   };
 
@@ -78,7 +97,14 @@ const QuestionsView = ({navigation, route}) => {
   return (
     <View style={styles.container}>
     <View style={styles.container2}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+          />
+      }
+      >
         <View  style={styles.buttonC}>
           {(user.rol === 'admin' || user.rol === 'maestro') && (
             <TouchableOpacity
@@ -137,7 +163,6 @@ const QuestionsView = ({navigation, route}) => {
                   question={question}
                   user={user}
                   navigation={navigation}
-                  handleQuestionDelete={handleQuestionDelete}
                   style={styles.questionCard} 
                 />
               ))}

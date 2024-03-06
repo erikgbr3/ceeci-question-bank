@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, View , Text, TouchableOpacity, ScrollView } from "react-native";
+import { StyleSheet, View , Text, TouchableOpacity, ScrollView, RefreshControl, Image } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';import AddBankView from "./AddBanks";
 import BankCard from "./getBanks";
 import BankController from "../../controllers/bankController";
@@ -12,6 +12,7 @@ const BanksView = ({route, navigation}) => {
   const [banks, setBanks] = useState([]);
   const [banksUser, setBanksUser] = useState([]);
   const [isDataUpdated, setDataUpdated] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { user } = useContext(AuthContext);
 
@@ -46,6 +47,19 @@ const BanksView = ({route, navigation}) => {
     }, [])
   );
 
+  const handleRefresh = async () => {
+    console.log('Refrescando preguntas...');
+    setIsRefreshing(true);
+    try {
+      await fetchBanks(route.params.roomId);
+      await fetchBanksUser(route.params.roomId, true);
+    } catch (error) {
+      console.error('Error al refrescar las preguntas:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   const handleDataUpdate = () => {
     fetchBanks(route.params.roomId);
     setDataUpdated(false);
@@ -58,7 +72,7 @@ const BanksView = ({route, navigation}) => {
   };
 
   const handleBankDelete = async () => {
-    await fetchBanks();
+    await fetchBanks(route.params.roomId);
     setDataUpdated(true);
   };
 
@@ -77,7 +91,14 @@ const BanksView = ({route, navigation}) => {
   return (
     <View style={styles.container}>
     <View style={styles.container2}>
-     <ScrollView>
+     <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+        />
+      }
+     >
       <View style={styles.buttonC}>
         {(user.rol === 'admin' || user.rol === 'maestro') && (
           <TouchableOpacity 
@@ -109,7 +130,19 @@ const BanksView = ({route, navigation}) => {
                   handleBankDelete={handleBankDelete}
                 />
               ))}
-              {banks.length == 0 && <Text>No hay bancos disponibles</Text>}
+              {banks.length == 0 && 
+              <View style={styles.ContainerV}>
+                <Text style={styles.text}>
+                  No hay bancos disponibles
+                </Text>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require('../../../assets/cat4.gif')}
+                    style={styles.image2}
+                  /> 
+                </View>
+              </View>
+              }
         </View>
         )}
         
@@ -163,6 +196,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 10,
+  },
+  ContainerV: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    marginTop: 30,
+    fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  imageContainer: {
+    position: 'relative',
+  },
+  image2: {
+    width: 250,
+    height: 250,
   },
 })
 

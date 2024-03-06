@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
 import { Button, TextInput } from 'react-native-paper';
-import { ScrollView, StyleSheet, View , FlatList, Text, Animated, TouchableOpacity, Dimensions } from "react-native";
+import { ScrollView, StyleSheet, View , FlatList, Text, Animated, TouchableOpacity, RefreshControl, Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddUserView from "./addUser";
 import UserCard from "./getUser";
@@ -11,12 +11,25 @@ const UsersView = ({navigation}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [users, setUsers] = useState([]);
   const [isDataUpdated, setDataUpdated] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
     fetchUsers();
     }, [])
   );
+
+  const handleRefresh = async () => {
+    console.log('Refrescando preguntas...');
+    setIsRefreshing(true);
+    try {
+      await fetchUsers();
+    } catch (error) {
+      console.error('Error al refrescar las salas:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   const handleDataUpdate = () => {
     fetchUsers();
@@ -53,7 +66,14 @@ const UsersView = ({navigation}) => {
   return (
     <View style={styles.container}>
     <View style={styles.container2}>
-        <ScrollView>
+        <ScrollView
+         refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+          />
+      }
+        >
 
         <View style={styles.buttonC}>
           <TouchableOpacity 

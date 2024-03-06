@@ -18,11 +18,12 @@ const QuestionCardUser = ({ question, user }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [isAnswerSaved, setIsAnswerSaved] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
 
   const optionLabels = ['A', 'B', 'C', 'D'];
 
   const shuffleOptions = (option) => {
-    const shuffledOption = {};
+    const shuffledOption = {};    
     const keys = Object.keys(option).filter(key => key.startsWith('option') || key.startsWith('correct'));
     shuffleArray(keys).forEach((key, index) => {
       shuffledOption[`option${index + 1}`] = option[key];
@@ -68,6 +69,7 @@ const QuestionCardUser = ({ question, user }) => {
       await AnswerController.createAnswer(user.id, question.id, optionId, selection);
       console.log('Respuesta Gurdada');
       setIsAnswerSaved(true);
+      setShowMessage(true);
     } catch (error) {
       console.error('Error saving answer:', error);
     }
@@ -103,10 +105,13 @@ const QuestionCardUser = ({ question, user }) => {
                     </Text>
                   </TouchableOpacity>
                 ))}
+                {showMessage && (
+                  <Text style={styles.message}>¡Respuesta guardada con éxito!</Text>
+                )}
               </View>
             ))}
             <View style={styles.saveC} >
-              <TouchableOpacity style={styles.save} onPress={saveAnswer} disabled={isAnswerSaved}>
+              <TouchableOpacity style={[styles.save, isAnswerSaved && styles.saveDisabled]} onPress={saveAnswer} disabled={isAnswerSaved}>
                     <Text style={styles.saveT} >Guardar</Text>
               </TouchableOpacity>
             </View>
@@ -145,6 +150,12 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10
   },
+  message: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 10,
+    color: 'green',
+  },
   saveC:{
     alignItems: 'center',
     marginTop: 10,
@@ -158,52 +169,14 @@ const styles = StyleSheet.create({
     borderWidth: .3,
     borderColor: 'black'
   },
+  saveDisabled: {
+    backgroundColor: 'gray',
+  },
   saveT:{
     fontSize: 16,
     padding: 8,
     color: 'black'
   }
 });
-
-/* const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#84b6f4',
-    borderRadius: 13,
-    padding: 2,
-    margin: 10,
-    alignItems: 'flex-end',
-    marginBottom: 20,
-  },
-  image:{
-    width: 50,
-    height: 50,
-  },
-  titleC:{
-    top: 10 ,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  title: {
-    marginLeft: 20,
-    width: '60%',
-    fontSize: 17,
-  },
-  deleteButton:{
-    backgroundColor: '#f45572',
-    borderRadius: 55,
-    padding: 9,
-    top: 22,
-  },
-  options: {
-    fontSize: 16
-  },
-  textOption: {
-    marginTop: 5,
-    fontSize: 15,
-    color: '#555',
-  },
-}); */
 
 export default QuestionCardUser;

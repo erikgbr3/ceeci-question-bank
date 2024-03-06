@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, View , Text, TouchableOpacity, ScrollView,} from "react-native";
+import { StyleSheet, View , Text, TouchableOpacity, ScrollView, RefreshControl, Image} from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddRomView from "./addRoom";
@@ -10,13 +10,20 @@ import { AuthContext } from "../../context/AuthContext";
 import RoomCardUser from "./getRoomsUser";
 
 
-  const RoomsView = ({navigation}) => {
+  const RoomsView = ({navigation, onRoomIdReceived}) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [roomsAdmin, setRoomsAdmin] = useState([]);
     const [roomsMaster, setRoomsMaster] = useState([]);
     const [roomsUser, setRoomsUser] = useState([]);
     const [isDataUpdated, setDataUpdated] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+
     const { user } = useContext(AuthContext);
+
+    const passRoomId = (roomId) => {
+      route.params?.onRoomIdReceived(roomId);
+    };
+  
 
     useFocusEffect(
       React.useCallback(() => {
@@ -25,6 +32,20 @@ import RoomCardUser from "./getRoomsUser";
         fetchRoomsUser();
       }, [])
     );
+
+    const handleRefresh = async () => {
+      console.log('Refrescando preguntas...');
+      setIsRefreshing(true);
+      try {
+        await fetchRoomsAdmin();
+        await fetchRoomsMaster(user.id);
+        await fetchRoomsUser();
+      } catch (error) {
+        console.error('Error al refrescar las salas:', error);
+      } finally {
+        setIsRefreshing(false);
+      }
+    };
 
     const handleDataUpdate = () => {
       fetchRoomsAdmin();
@@ -84,7 +105,14 @@ import RoomCardUser from "./getRoomsUser";
   return (
       <View style={styles.container}> 
       <View style={styles.container2}>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+            />
+          }
+        >
           <View style={styles.buttonC}>
             {(user.rol === 'admin' || user.rol === 'maestro')&& (
               <TouchableOpacity
@@ -115,7 +143,19 @@ import RoomCardUser from "./getRoomsUser";
                     handleRoomDelete={handleRoomDelete}
                   />
                 ))}
-                {roomsAdmin.length === 0 && <Text>No hay habitaciones disponibles</Text>}
+                {roomsAdmin.length === 0 && 
+                <View style={styles.ContainerV}>
+                  <Text style={styles.text}>
+                    No hay salas disponibles
+                  </Text>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={require('../../../assets/box.gif')}
+                      style={styles.image2}
+                    /> 
+                  </View>
+                </View>
+                }
           </View>
           )}
           
@@ -129,7 +169,18 @@ import RoomCardUser from "./getRoomsUser";
                     handleRoomDelete={handleRoomDelete}
                   />
                 ))}
-                {roomsMaster.length === 0 && <Text>No hay habitaciones disponibles</Text>}
+                {roomsMaster.length === 0 && 
+                <View style={styles.ContainerV}>
+                <Text style={styles.text}>
+                  No hay salas disponibles
+                </Text>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require('../../../assets/box.gif')}
+                    style={styles.image2}
+                  /> 
+                </View>
+              </View>}
           </View>
           )}
           
@@ -143,7 +194,18 @@ import RoomCardUser from "./getRoomsUser";
                     handleRoomDelete={handleRoomDelete}
                   />
                 ))}
-                {roomsUser.length === 0 && <Text>No hay habitaciones disponibles</Text>}
+                {roomsUser.length === 0 && 
+                <View style={styles.ContainerV}>
+                  <Text style={styles.text}>
+                    No hay salas disponibles
+                  </Text>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={require('../../../assets/box.gif')}
+                      style={styles.image2}
+                    /> 
+                  </View>
+                </View>}
           </View>
           )}
           
@@ -181,6 +243,24 @@ import RoomCardUser from "./getRoomsUser";
       justifyContent: 'center',
       alignItems: 'center',
       elevation: 10,
+    },
+    ContainerV: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    text: {
+      marginTop: 30,
+      fontSize: 20,
+      textAlign: 'center',
+      marginBottom: 20,
+    },
+    imageContainer: {
+      position: 'relative',
+    },
+    image2: {
+      width: 250,
+      height: 250,
     },
   });
 

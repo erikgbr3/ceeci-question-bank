@@ -2,25 +2,25 @@ import React, { useContext, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
 import { Text, TouchableOpacity, View, StyleSheet, TextInput} from "react-native";
 import { Button } from 'react-native-paper';
-import SelectDropdown from 'react-native-select-dropdown';
 import Modal from 'react-native-modal';
 import RoomController from "../../controllers/roomControler";
 import UserController from "../../controllers/userController";
 import { AuthContext } from "../../context/AuthContext";
+import ModalSelector from 'react-native-modal-selector';
 
-const AddRomView = ({isVisible, closeModal}) => {
+const AddRoomView = ({isVisible, closeModal}) => {
   const { user } = useContext(AuthContext);
   const [name, setName] = useState('');
-  const [users, setUsers] = useState('');
+  const [users, setUsers] = useState([]);
   const userId = user?.id;
-  const [selectedUserId, setSelectedUserId] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const fetchUsers = async () => {
     try {
-      const roomsData = await UserController.getAllUsers();
-      setUsers(roomsData);
+      const usersData = await UserController.getAllUsers();
+      setUsers(usersData);
     } catch (error) {
-      console.error('Error al buscar las salas:', error);
+      console.error('Error al buscar los usuarios:', error);
     }
   };
 
@@ -30,65 +30,47 @@ const AddRomView = ({isVisible, closeModal}) => {
     }, [])
   );
 
-  /* useEffect(() => {
-    fetchUsers();
-  }, []) */
-
   const createRoom = async () => {
     try {
-
-      const userIdToSend = selectedUserId || userId;
-
+      const userIdToSend = selectedUser ? selectedUser.id : userId;
       const newRoomData = await RoomController.createRoom(name, parseInt(userIdToSend));
- 
       console.log(newRoomData);
       closeModal();
       setName('');
       return newRoomData;
-      
     } catch (error) {
       console.error('Error al crear la sala:', error);
     }
   };
 
   const handlePressCloseModal = () => {
-      setName('');
-      closeModal();
+    setName('');
+    setSelectedUser(null);
+    closeModal();
   };
 
   return (
     <Modal
-    isVisible={isVisible}
+      isVisible={isVisible}
     >
-
       <View style={styles.modalContainer}>
-
         <Text style={styles.tagInput}>Nombre de la Sala</Text>
         <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={setName}
+          style={styles.input}
+          value={name}
+          onChangeText={setName}
         />
 
-    {user.rol === 'admin' && (
+        {user.rol === 'admin' && (
           <View>
-            <SelectDropdown
+            <ModalSelector
               data={users}
-              defaultButtonText='Selecciona aquí'
-              onSelect={(selectedItem, index) => {
-                if(selectedItem){
-                  setSelectedUserId(selectedItem.id);
-                  console.log(selectedItem.id);
-                } else {
-                  console.log("alerta de error");  
-                }
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem.name;
-              }}
-              rowTextForSelection={(item, index) => {
-                return item.name;
-              }}
+              keyExtractor={(item) => item.id.toString()}
+              labelExtractor={(item) => item.name}
+              selectedItemTextStyle={{ color: 'black' }}
+              initValue="Selecciona aquí"
+              onChange={(option) => setSelectedUser(option)}
+              style={styles.drop}
             />
           </View>
         )}
@@ -106,9 +88,7 @@ const AddRomView = ({isVisible, closeModal}) => {
             </Button>
           </TouchableOpacity>
         </View>
-
       </View>
-      
     </Modal>
   );
 }
@@ -146,7 +126,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'black'
-  }, 
-})
+  },
+  drop:{
+    marginBottom: 15,
+  }
+});
 
-export default AddRomView;
+export default AddRoomView;

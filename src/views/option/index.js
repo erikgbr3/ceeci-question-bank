@@ -11,6 +11,7 @@ const OptionsView = ({navigation, route}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [options, setOptions] = useState([]);
   const [isDataUpdated, setDataUpdated] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { user } = useContext(AuthContext);
 
@@ -55,7 +56,6 @@ const OptionsView = ({navigation, route}) => {
   return (
     <View style={styles.container}>
     <View style={styles.container2}>
-      <ScrollView>
         <View style={styles.buttonC}>
           {(user.rol === 'admin' || user.rol === 'maestro') && (
             <TouchableOpacity
@@ -88,7 +88,7 @@ const OptionsView = ({navigation, route}) => {
       {options.length === 0 && 
         <View style={styles.ContainerV}>
           <Text style={styles.text}>
-            No hay preguntas disponibles
+            No hay opciones disponibles
           </Text>
           <View style={styles.imageContainer}>
             <Image
@@ -98,7 +98,6 @@ const OptionsView = ({navigation, route}) => {
           </View>
         </View>
       }
-      </ScrollView>
     </View>
     </View>
   );
