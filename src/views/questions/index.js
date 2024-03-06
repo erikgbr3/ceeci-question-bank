@@ -7,6 +7,7 @@ import QuestionCard from "./getQuestions";
 import QuestionController from "../../controllers/questionController";
 import { AuthContext } from "../../context/AuthContext";
 import QuestionCardUser from "./getQuestionsUser";
+import QuestionCardUserSecond from "./getQuestionsUser2";
 
 const QuestionsView = ({navigation, route}) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -158,7 +159,7 @@ const QuestionsView = ({navigation, route}) => {
         {user.rol === 'usuario' && (
           <View style={styles.questionContainer}>
               {questionsUser.map(question =>(
-                <QuestionCardUser
+                <QuestionCardUserSecond
                   key={question.id.toString()}
                   question={question}
                   user={user}

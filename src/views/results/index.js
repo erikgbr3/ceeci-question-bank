@@ -88,12 +88,14 @@ const ResultView = () => {
         }
       >
         {results.map((result, index) => (
-        <View key={index} style={styles.card}>
-          <TouchableOpacity onPress={() => toggleDropdown(index)}>
-            <View>
-              <Text style={styles.title}>{result.name}</Text>
-            </View>
-          </TouchableOpacity>
+        <View key={index}>
+          <View style={styles.card}>
+            <TouchableOpacity onPress={() => toggleDropdown(index)}>
+              <View>
+                <Text style={styles.title}>{result.name}</Text>
+              </View>
+            </TouchableOpacity>      
+          </View>
           {result.BankQuestion.map((question, idx) => (
             result.isDropdownOpen && (
               <View key={idx} style={styles.optionsContainer}>
@@ -102,15 +104,20 @@ const ResultView = () => {
                     <Text style={styles.title}>{question.textQuestion}</Text>
                   </View>
                 </TouchableOpacity>
-                {question.QuestionAnswer.map((answer, i) => (
-                  question.isSDropdownOpen && (
-                    <View key={i}>
-                      <ResultCard
-                      answer={answer}
-                      />
-                    </View>
-                  )
-                ))}
+                {question.QuestionOption.map((option, id) => (
+                  <View key={id}>
+                    {question.QuestionAnswer.map((answer, i) => (
+                      question.isSDropdownOpen && (
+                        <View key={i}>
+                          <ResultCard
+                          option={option}
+                          answer={answer}
+                          />
+                        </View>
+                      )
+                    ))}
+                  </View> 
+                ))}  
               </View>
             )
           ))}
@@ -125,20 +132,26 @@ export default ResultView;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#b8e4ff',
-    borderRadius: 13,
-    padding: 10,
-    margin: 10,
+    borderColor: 'grey',
+    borderWidth: .4,
+    paddingTop: 5,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10,
+    marginBottom: 10,
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   optionsContainer: {
-    marginTop: 10,
+    marginRight: 10,
     borderTopWidth: 1,
-    borderTopColor: 'white',
-    paddingTop: 10,
+    borderColor: '#60AEDB',
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: '#60AEDB',
+    width: '100%',
   },
 })

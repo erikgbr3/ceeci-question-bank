@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import OptionController from '../../controllers/optionController';
 import AnswerController from '../../controllers/answerController';
 
-const ResultCard = ({answer}) => {
+const ResultCard = ({option, answer}) => {
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isSDropdownOpen, setSDropdownOpen] = useState(false);
@@ -30,6 +30,9 @@ const ResultCard = ({answer}) => {
                   <TouchableOpacity  onPress={toggleSDropdown}>
                     <Text style={styles.textOption }>
                     {answer.selection}
+                    </Text>
+                    <Text style={styles.textOption }>
+                     Respuesta Correcta: {option.correctA}
                     </Text>
                   </TouchableOpacity>
           </View>
@@ -66,33 +69,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 10,
     marginBottom: 10
-  },
-  message: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginTop: 10,
-    color: 'green',
-  },
-  saveC:{
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  save:{
-    backgroundColor: '#a3ffac',
-    alignItems: 'center',
-    width: '60%',
-    borderRadius: 12,
-    borderWidth: .3,
-    borderColor: 'black'
-  },
-  saveDisabled: {
-    backgroundColor: 'gray',
-  },
-  saveT:{
-    fontSize: 16,
-    padding: 8,
-    color: 'black'
   }
 });
 
