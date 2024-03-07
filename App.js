@@ -22,10 +22,9 @@ export default function App(){
   return(
     <AuthProvider>
       <NavigationContainer>
-      <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0)" barStyle="light-content" /> 
+        <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0)" barStyle="light-content" /> 
         <Stacks/>
       </NavigationContainer>
-    </AuthProvider>
-    
+    </AuthProvider>   
   )
 }

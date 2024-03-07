@@ -60,7 +60,7 @@ return (
       headerTitleStyle: {
         fontSize: 23
       },
-      headerTintColor: 'white', // Establecer el color del texto del encabezado
+      headerTintColor: 'white',
       headerRight: () => (
         <Button
         style={styles.buttonV}

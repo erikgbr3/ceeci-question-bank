@@ -39,10 +39,8 @@ const ResultView = () => {
     try {
       const roomsData = await RoomController.getAllRooms(userId);
       console.log('Salas obtenidas:', roomsData);
-      if (roomsData.length > 0) {
-        fetchBanks(roomsData[0].id); // Suponiendo que solo necesitas el ID de la primera sala
-      }
       setRooms(roomsData);
+      fetchBanks(roomsData);
     } catch (error) {
       console.error('Error al buscar las salas del maestro:', error);
     }
@@ -50,9 +48,13 @@ const ResultView = () => {
 
   const fetchBanks = async (roomId) => {
     try {
-      const questionsData = await ResultController.getResult(roomId);
-      console.log('Resultados obtenidos:', questionsData);
-      setResults(questionsData.map(result => ({ ...result, isDropdownOpen: false })));
+       const allBanks = await Promise.all(
+      rooms.map(async (room) => {
+        const banksData = await ResultController.getResult(room.id);
+        return banksData.map(result => ({ ...result, isDropdownOpen: false }));
+      })
+    );
+    setResults(allBanks.flat());
     } catch (error) {
       console.error('Error al buscar los resultados:', error);
     }
@@ -62,7 +64,8 @@ const ResultView = () => {
     console.log('Refrescando preguntas...');
     setIsRefreshing(true);
     try {
-      fetchBanks();
+      fetchRoomsMaster(user.id);
+      fetchBanks(rooms.id);
     } catch (error) {
       console.error('Error al refrescar las salas:', error);
     } finally {
@@ -73,9 +76,14 @@ const ResultView = () => {
   useFocusEffect(
     React.useCallback(() => {
       fetchRoomsMaster(user.id);
-      fetchBanks(rooms.id);
     }, [])
   );
+
+  useEffect(() => {
+    if (rooms.length > 0) {
+      fetchBanks(rooms);
+    }
+  }, [rooms]);
 
   return (
     <View>
