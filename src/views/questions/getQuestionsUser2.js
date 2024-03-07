@@ -11,8 +11,6 @@ const QuestionCardUserSecond = ({ question, user }) => {
   const [isAnswerSaved, setIsAnswerSaved] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
-  const optionLabels = ['A', 'B', 'C'];
-
   const fetchOptions = async (questionId) => {
     try {
       const optionsData = await OptionController.getAllOptions(questionId);

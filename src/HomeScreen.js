@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, StatusBar } from "react-native";
 import { Button } from 'react-native-paper';
 import { AuthContext } from "./context/AuthContext";
 import BanksView from "./views/bank";
@@ -51,6 +51,7 @@ export default function HomeScreen ({route, navigation}) {
 
 return (
   <View style={styles.nav}>
+  <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0)" barStyle="light-content" />
   <Tab.Navigator
     screenOptions={{
       headerStyle: {
