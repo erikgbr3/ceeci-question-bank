@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import OptionController from '../../controllers/optionController';
 import AnswerController from '../../controllers/answerController';
 
-const ResultCard = ({option, answer}) => {
+const ResultCardUser = ({option, answer}) => {
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isSDropdownOpen, setSDropdownOpen] = useState(false);
@@ -13,21 +13,11 @@ const ResultCard = ({option, answer}) => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  const toggleSDropdown = () => {
-    setSDropdownOpen(!isSDropdownOpen);
-  };
-
   return (
     <View>
       <View style={styles.optionsContainer}>
         <TouchableOpacity onPress={toggleDropdown}>
-          <View>
-            <Text style={styles.title}>{answer.AnswerUser.name}</Text>
-          </View>
-        </TouchableOpacity>
-        {isDropdownOpen && (
-          <View style={styles.optionsContainer}>
-                  <View style={[styles.answerContainer]}>
+        <View style={[styles.answerContainer]}>
                     <Text style={[styles.textOption, answer.selection === option.correctA ? styles.correctAnswerContainer : styles.incorrectAnswerContainer]}>
                       {answer.selection}
                     </Text>
@@ -42,8 +32,7 @@ const ResultCard = ({option, answer}) => {
                       Respuesta Correcta: {option.correctA}
                     </Text>
                   </View>
-          </View>
-        )}
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -108,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResultCard;
+export default ResultCardUser;

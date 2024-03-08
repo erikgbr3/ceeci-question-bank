@@ -44,7 +44,8 @@ export default function HomeScreen ({route, navigation}) {
     ];
   } else if (user.rol === 'usuario') {
     actions = [
-    { title: 'Cerrar sesión', onPress: handleLogout }
+      { title: 'Resultados', onPress: resultView },
+      { title: 'Cerrar sesión', onPress: handleLogout }
     ]
   }
 
