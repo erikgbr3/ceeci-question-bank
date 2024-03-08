@@ -39,10 +39,8 @@ const ResultView = () => {
     try {
       const roomsData = await RoomController.getAllRooms(userId);
       console.log('Salas obtenidas:', roomsData);
-      if (roomsData.length > 0) {
-        fetchBanks(roomsData[0].id); // Suponiendo que solo necesitas el ID de la primera sala
-      }
       setRooms(roomsData);
+      fetchBanks(roomsData);
     } catch (error) {
       console.error('Error al buscar las salas del maestro:', error);
     }
@@ -50,19 +48,23 @@ const ResultView = () => {
 
   const fetchBanks = async (roomId) => {
     try {
-      const questionsData = await ResultController.getResult(roomId);
-      console.log('Resultados obtenidos:', questionsData);
-      setResults(questionsData.map(result => ({ ...result, isDropdownOpen: false })));
+       const allBanks = await Promise.all(
+      rooms.map(async (room) => {
+        const banksData = await ResultController.getResult(room.id);
+        return banksData.map(result => ({ ...result, isDropdownOpen: false }));
+      })
+    );
+    setResults(allBanks.flat());
     } catch (error) {
       console.error('Error al buscar los resultados:', error);
     }
   }
-
   const handleRefresh = async () => {
     console.log('Refrescando preguntas...');
     setIsRefreshing(true);
     try {
-      fetchBanks();
+      fetchRoomsMaster(user.id);
+      fetchBanks(rooms.id);
     } catch (error) {
       console.error('Error al refrescar las salas:', error);
     } finally {
@@ -73,12 +75,18 @@ const ResultView = () => {
   useFocusEffect(
     React.useCallback(() => {
       fetchRoomsMaster(user.id);
-      fetchBanks(rooms.id);
     }, [])
   );
 
+  useEffect(() => {
+    if (rooms.length > 0) {
+      fetchBanks(rooms);
+    }
+  }, [rooms]);
+
   return (
-    <View>
+    <View style={styles.container}>
+    <View style={styles.container2}>
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -101,7 +109,7 @@ const ResultView = () => {
               <View key={idx} style={styles.optionsContainer}>
                 <TouchableOpacity onPress={() => toggleSDropdown(index, idx)}>
                   <View>
-                    <Text style={styles.title}>{question.textQuestion}</Text>
+                    <Text style={styles.title2}>{question.textQuestion}</Text>
                   </View>
                 </TouchableOpacity>
                 {question.QuestionOption.map((option, id) => (
@@ -121,9 +129,11 @@ const ResultView = () => {
               </View>
             )
           ))}
+          <View style={styles.footer}></View>
         </View>
       ))}
       </ScrollView>    
+    </View>
     </View>
   )
 }
@@ -131,27 +141,59 @@ const ResultView = () => {
 export default ResultView;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#9E78EE'
+  },
+  container2:{
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 22,
+    borderTopRightRadius: 22,
+  },
   card: {
-    borderColor: 'grey',
-    borderWidth: .4,
-    paddingTop: 5,
+    backgroundColor: '#c797da',
+    borderTopLeftRadius: 22,
+    borderTopRightRadius: 22,
+    paddingTop: 10,
+    paddingBottom: 10,
     marginLeft: 10,
     marginRight: 10,
     marginTop: 10,
+  },
+  footer: {
+    minHeight: 40,
+    backgroundColor: '#c797da',
+    borderBottomLeftRadius: 22,
+    borderBottomRightRadius: 22,
+    borderColor: 'grey',
+    borderWidth: .1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
     marginBottom: 10,
   },
   title: {
     fontSize: 18,
+    color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  title2: {
+    fontSize: 18,
+    color: 'black',
+    textAlign: 'center',
+  },
   optionsContainer: {
+    backgroundColor: '#b0c2f2',
+    borderColor: 'grey',
+    borderWidth: .1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginLeft: 10,
     marginRight: 10,
-    borderTopWidth: 1,
-    borderColor: '#60AEDB',
-    paddingTop: 5,
-    paddingBottom: 5,
-    backgroundColor: '#60AEDB',
-    width: '100%',
+    marginTop: 1,
+    marginBottom: 1,
   },
 })

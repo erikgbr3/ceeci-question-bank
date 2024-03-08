@@ -29,7 +29,7 @@ const ResultCard = ({option, answer}) => {
           <View style={styles.optionsContainer}>
                   <TouchableOpacity  onPress={toggleSDropdown}>
                     <Text style={styles.textOption }>
-                    {answer.selection}
+                    Su respuesta: {answer.selection}
                     </Text>
                     <Text style={styles.textOption }>
                      Respuesta Correcta: {option.correctA}
@@ -44,7 +44,7 @@ const ResultCard = ({option, answer}) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#b8e4ff',
+    backgroundColor: 'red',
     borderRadius: 13,
     padding: 10,
     margin: 10,
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   optionsContainer: {
     marginTop: 10,
@@ -61,11 +61,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   textOption: {
-    marginTop: 5,
+    textAlign: 'center',
     fontSize: 15,
     color: 'black',
-    borderWidth: .3,
-    borderColor: 'white',
     borderRadius: 12,
     padding: 10,
     marginBottom: 10
