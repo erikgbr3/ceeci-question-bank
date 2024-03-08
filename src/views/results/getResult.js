@@ -80,24 +80,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   correctAnswerContainer: {
-    backgroundColor: 'green',
+    backgroundColor: '#77dd77',
     flex: 1,
   },
   incorrectAnswerContainer: {
-    backgroundColor: 'red',
+    backgroundColor: '#ff6961',
     flex: 1,
   },
   correctAnswerText: {
-    backgroundColor: 'green',
+    backgroundColor: '#77dd77',
     borderRadius: 12,
     padding: 10,
-    color: 'white',
+    color: 'black',
   },
   incorrectAnswerText: {
-    backgroundColor: 'red',
+    backgroundColor: '#ff6961',
     borderRadius: 12,
     padding: 10,
-    color: 'white',
+    color: 'black',
   },
   feedbackText: {
     marginLeft: 10,
