@@ -10,8 +10,39 @@ const AddOptionView = ({isVisible, questionId, closeModal}) => {
   const [option3, setOption3] = useState('');
   const [correctA, setCorrectA] = useState('');
 
+  const [option1Error, setOption1Error] = useState('');
+  const [option2Error, setOption2Error] = useState('');
+  const [option3Error, setOption3Error] = useState('');
+  const [correctAError, setCorrectAError] = useState('');
+
+  const validateEmptyFields = () => {
+    let isValid = true;
+    if (option1.trim() === '') {
+      setOption1Error('La opcion 1 es requerida');
+      isValid = false;
+    }
+    if (option2.trim() === '') {
+      setOption2Error('La opcion 2 es requerida');
+      isValid = false;
+    }
+    if (option3.trim() === '') {
+      setOption3Error('La opcion 3 es requerida');
+      isValid = false;
+    }
+    if (correctA.trim() === '') {
+      setCorrectAError('La respuesta correcta es requerida');
+      isValid = false;
+    }
+    return isValid;
+  };
+
   const createOption = async () => {
     try {
+
+      if (!validateEmptyFields()) {
+        return;
+      }
+
       const questionIdInt = parseInt(questionId);
       const newOptionData = await OptionController.createNewOption(option1, option2, option3, correctA, questionIdInt);
  
@@ -21,6 +52,10 @@ const AddOptionView = ({isVisible, questionId, closeModal}) => {
       setOption2('');
       setOption3('');
       setCorrectA('');
+      setOption1Error('');
+      setOption2Error('');
+      setOption3Error('');
+      setCorrectAError('');
       return newOptionData;
       
     } catch (error) {
@@ -33,6 +68,10 @@ const AddOptionView = ({isVisible, questionId, closeModal}) => {
     setOption2('');
     setOption3('');
     setCorrectA('');
+    setOption1Error('');
+    setOption2Error('');
+    setOption3Error('');
+    setCorrectAError('');
     closeModal();
   };
 
@@ -50,24 +89,31 @@ const AddOptionView = ({isVisible, questionId, closeModal}) => {
         value={option1}
         onChangeText={setOption1}
         />
+        {option1Error ? <Text style={styles.error}>{option1Error}</Text> : null}
+
         <Text style={styles.tagInput}>Opcion 2</Text>
         <TextInput
         style={styles.input}
         value={option2}
         onChangeText={setOption2}
         />
+        {option2Error ? <Text style={styles.error}>{option2Error}</Text> : null}
+
         <Text style={styles.tagInput}>Opcion 3</Text>
         <TextInput
         style={styles.input}
         value={option3}
         onChangeText={setOption3}
         />
+        {option3Error ? <Text style={styles.error}>{option3Error}</Text> : null}
+
         <Text style={styles.tagInput}>Opcion correcta</Text>
         <TextInput
         style={styles.input}
         value={correctA}
         onChangeText={setCorrectA}
         />
+        {correctAError ? <Text style={styles.error}>{correctAError}</Text> : null}
 
         <View style={styles.haku}>
           <TouchableOpacity onPress={createOption}>
@@ -124,6 +170,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black'
   }, 
+  error: {
+    color: 'red',
+    marginBottom: 10,
+  },
 })
 
 export default AddOptionView;

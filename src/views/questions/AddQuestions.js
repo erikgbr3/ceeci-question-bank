@@ -6,9 +6,26 @@ import QuestionController from "../../controllers/questionController";
 
 const AddQuestionView = ({isVisible, bankId, closeModal}) => {
   const [textQuestion, setTextQuestion] = useState('');
+  const [textQuestionError, setTextQuestionError] = useState('');
+
+  const validateEmptyFields = () => {
+    let isValid = true;
+    if (textQuestion.trim() === ''){
+      setTextQuestionError('El nombre de la pregunta es requerido');
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
 
   const createQuestion = async () => {
     try {
+
+      if (!validateEmptyFields()) {
+        return;
+      }
+
       const bankIdInt = parseInt(bankId);
 
       const newQuestionData = await QuestionController.createNewQuestion(textQuestion, bankIdInt);
@@ -16,6 +33,7 @@ const AddQuestionView = ({isVisible, bankId, closeModal}) => {
       console.log(newQuestionData);
       closeModal();
       setTextQuestion('');
+      setTextQuestionError('');
       return newQuestionData;
       
     } catch (error) {
@@ -25,6 +43,7 @@ const AddQuestionView = ({isVisible, bankId, closeModal}) => {
 
   const handlePressCloseModal = () => {
     setTextQuestion('');
+    setTextQuestionError('');
     closeModal();
   };
 
@@ -42,6 +61,7 @@ const AddQuestionView = ({isVisible, bankId, closeModal}) => {
         value={textQuestion}
         onChangeText={setTextQuestion}
         />
+        {textQuestionError ? <Text style={styles.error}>{textQuestionError}</Text> : null}
 
         <View style={styles.haku}>
           <TouchableOpacity onPress={createQuestion}>
@@ -97,6 +117,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black'
   }, 
+  error: {
+    color: 'red',
+    marginBottom: 10,
+  },
 })
 
 export default AddQuestionView;

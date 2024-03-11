@@ -6,9 +6,25 @@ import BankController from "../../controllers/bankController";
 
 const AddBankView = ({isVisible, roomId, closeModal}) => {
   const [name, setName] = useState('');
+  const [nameError, setNameError] = useState('');
+
+  const validateEmptyFields = () => {
+    let isValid= true;
+    if (name.trim() === ''){
+      setNameError('El nombre del banco es requerido');
+      isValid = false;
+    }
+
+    return isValid;
+  }
 
   const createBank = async () => {
     try {
+
+      if (!validateEmptyFields()) {
+        return;
+      }
+
       const roomIdInt = parseInt(roomId);
 
       const newBankData = await BankController.createNewBank(name, roomIdInt);
@@ -16,6 +32,7 @@ const AddBankView = ({isVisible, roomId, closeModal}) => {
       console.log(newBankData);
       closeModal();
       setName('');
+      setNameError('');
       return newBankData;
       
     } catch (error) {
@@ -25,6 +42,7 @@ const AddBankView = ({isVisible, roomId, closeModal}) => {
 
   const handlePressCloseModal = () => {
     setName('');
+    setNameError('');
     closeModal();
   };
 
@@ -42,6 +60,7 @@ const AddBankView = ({isVisible, roomId, closeModal}) => {
         value={name}
         onChangeText={setName}
         />
+        {nameError ? <Text style={styles.error}>{nameError}</Text> : null}
 
         <View style={styles.haku}>
           <TouchableOpacity onPress={createBank}>
@@ -96,6 +115,10 @@ const styles = StyleSheet.create({
   },  
   buttonText: {
     color: 'black'
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10,
   }, 
 })
 

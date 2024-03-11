@@ -10,6 +10,7 @@ const QuestionCardUserSecond = ({ question, user }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [isAnswerSaved, setIsAnswerSaved] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+  const [isSelectionRequired, setIsSelectionRequired] = useState(false);
 
   const fetchOptions = async (questionId) => {
     try {
@@ -31,6 +32,7 @@ const QuestionCardUserSecond = ({ question, user }) => {
       ...prevSelectedOptions,
       [index]: selectedValue,
     }));
+    setIsSelectionRequired(false); 
   };
 
   const saveAnswer = async () => {
@@ -38,7 +40,7 @@ const QuestionCardUserSecond = ({ question, user }) => {
        // Obtener el id de la opción seleccionada
        const selectedOption = options.find((option, index) => selectedOptions[index]);
        if (!selectedOption) {
-         console.error('No option selected');
+        setIsSelectionRequired(true); 
          return;
        }
        const optionId = selectedOption.id;
@@ -102,6 +104,9 @@ const QuestionCardUserSecond = ({ question, user }) => {
             C: {option.option3}
           </Text>
         </TouchableOpacity>
+        {isSelectionRequired && !isAnswerSaved && (
+                  <Text style={styles.error}>¡Debe seleccionar una opción!</Text>
+                )}
         {showMessage && (
           <Text style={styles.message}>¡Respuesta guardada con éxito!</Text>
         )}
@@ -177,7 +182,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 8,
     color: 'black'
-  }
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10,
+  },
 });
 
 export default QuestionCardUserSecond;

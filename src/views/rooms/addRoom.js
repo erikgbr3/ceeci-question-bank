@@ -12,8 +12,26 @@ const AddRoomView = ({isVisible, closeModal}) => {
   const { user } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [users, setUsers] = useState([]);
+  const [nameError, setNameError] = useState('');
+  const [usersError, setUsersError] = useState('');
   const userId = user?.id;
   const [selectedUser, setSelectedUser] = useState(null);
+
+  const validateEmptyFields = () => {
+    let isValid= true;
+    if (name.trim() === ''){
+      setNameError('El nombre de la sala es requerido');
+      isValid = false;
+    }
+
+    if (!selectedUser) {
+      setUsersError('Debe seleccionar un usuario');
+      isValid = false;
+    }
+
+    return isValid;
+  }
+  
 
   const fetchUsers = async () => {
     try {
@@ -32,11 +50,19 @@ const AddRoomView = ({isVisible, closeModal}) => {
 
   const createRoom = async () => {
     try {
+
+      if (!validateEmptyFields()) {
+        return;
+      }
+
       const userIdToSend = selectedUser ? selectedUser.id : userId;
       const newRoomData = await RoomController.createRoom(name, parseInt(userIdToSend));
       console.log(newRoomData);
       closeModal();
       setName('');
+      setSelectedUser(null);
+      setNameError('');
+      setUsersError('');
       return newRoomData;
     } catch (error) {
       console.error('Error al crear la sala:', error);
@@ -46,6 +72,8 @@ const AddRoomView = ({isVisible, closeModal}) => {
   const handlePressCloseModal = () => {
     setName('');
     setSelectedUser(null);
+    setNameError('');
+    setUsersError('');
     closeModal();
   };
 
@@ -60,6 +88,7 @@ const AddRoomView = ({isVisible, closeModal}) => {
           value={name}
           onChangeText={setName}
         />
+        {nameError ? <Text style={styles.error}>{nameError}</Text> : null}
 
         {user.rol === 'admin' && (
           <View>
@@ -72,8 +101,10 @@ const AddRoomView = ({isVisible, closeModal}) => {
               onChange={(option) => setSelectedUser(option)}
               style={styles.drop}
             />
-          </View>
+            {usersError ? <Text style={styles.error}>{usersError}</Text> : null}
+          </View> 
         )}
+        
 
         <View style={styles.haku}>
           <TouchableOpacity onPress={createRoom}>
@@ -129,7 +160,11 @@ const styles = StyleSheet.create({
   },
   drop:{
     marginBottom: 15,
-  }
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10,
+  },
 });
 
 export default AddRoomView;
