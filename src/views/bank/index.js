@@ -48,13 +48,13 @@ const BanksView = ({route, navigation}) => {
   );
 
   const handleRefresh = async () => {
-    console.log('Refrescando preguntas...');
+    console.log('Refrescando bancos...');
     setIsRefreshing(true);
     try {
       await fetchBanks(route.params.roomId);
       await fetchBanksUser(route.params.roomId, true);
     } catch (error) {
-      console.error('Error al refrescar las preguntas:', error);
+      console.error('Error al refrescar los bancos:', error);
     } finally {
       setIsRefreshing(false);
     }

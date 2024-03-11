@@ -34,7 +34,7 @@ import RoomCardUser from "./getRoomsUser";
     );
 
     const handleRefresh = async () => {
-      console.log('Refrescando preguntas...');
+      console.log('Refrescando salas...');
       setIsRefreshing(true);
       try {
         await fetchRoomsAdmin();

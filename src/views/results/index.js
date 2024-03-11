@@ -109,13 +109,13 @@ const ResultView = () => {
   }
   
   const handleRefresh = async () => {
-    console.log('Refrescando preguntas...');
+    console.log('Refrescando resultados...');
     setIsRefreshing(true);
     try {
       fetchRoomsMaster(user.id);
       fetchBanks(rooms.id);
     } catch (error) {
-      console.error('Error al refrescar las salas:', error);
+      console.error('Error al refrescar los resultados:', error);
     } finally {
       setIsRefreshing(false);
     }

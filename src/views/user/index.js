@@ -20,12 +20,12 @@ const UsersView = ({navigation}) => {
   );
 
   const handleRefresh = async () => {
-    console.log('Refrescando preguntas...');
+    console.log('Refrescando usuarios...');
     setIsRefreshing(true);
     try {
       await fetchUsers();
     } catch (error) {
-      console.error('Error al refrescar las salas:', error);
+      console.error('Error al refrescar los usuarios:', error);
     } finally {
       setIsRefreshing(false);
     }
