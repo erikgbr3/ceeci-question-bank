@@ -60,8 +60,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 15,
     color: 'black',
-    borderWidth: .3,
-    borderColor: 'white',
     borderRadius: 12,
     padding: 10,
     marginBottom: 10
@@ -72,21 +70,19 @@ const styles = StyleSheet.create({
   },
   correctAnswerContainer: {
     backgroundColor: '#77dd77',
+    textAlign: 'center',
     flex: 1,
   },
   incorrectAnswerContainer: {
     backgroundColor: '#ff6961',
+    textAlign: 'center',
     flex: 1,
   },
   correctAnswerText: {
-    backgroundColor: '#77dd77',
-    borderRadius: 12,
     padding: 10,
     color: 'black',
   },
   incorrectAnswerText: {
-    backgroundColor: '#ff6961',
-    borderRadius: 12,
     padding: 10,
     color: 'black',
   },

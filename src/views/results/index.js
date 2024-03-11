@@ -197,7 +197,7 @@ const ResultView = () => {
         </View>
       ))}
         </View>
-        )}
+    )}
 
         {user.rol === 'usuario' && (
           <View>
@@ -235,6 +235,7 @@ const ResultView = () => {
                           </View>
                       )
                   ))}
+                <View style={styles.footer}></View>
               </View>
           ))}
         </View>

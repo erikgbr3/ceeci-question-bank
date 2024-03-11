@@ -1,5 +1,5 @@
 const BackendConfig = {
-  url: 'http://10.111.65.148:3000'
+  url: 'https://ceeci-questions.vercel.app'
 }
 
 export default BackendConfig;

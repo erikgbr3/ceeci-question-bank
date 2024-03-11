@@ -14,12 +14,12 @@ class Auth {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
+        throw new Error(data.message);
       }
 
-      const data = await response.json();
       return data;
     } catch (error) {
       throw new Error('Error al iniciar sesión: ' + error.message);

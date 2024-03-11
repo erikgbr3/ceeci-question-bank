@@ -88,14 +88,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   correctAnswerText: {
-    backgroundColor: '#77dd77',
-    borderRadius: 12,
     padding: 10,
     color: 'black',
   },
   incorrectAnswerText: {
-    backgroundColor: '#ff6961',
-    borderRadius: 12,
     padding: 10,
     color: 'black',
   },

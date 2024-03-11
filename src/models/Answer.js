@@ -22,6 +22,27 @@ class Answer {
       throw new Error('Error al crear respuesta: ' + error.message);
     }
   }
+
+  static async getAnswer() {
+    try {
+      const response = await fetch(`${BackendConfig.url}/api/answer`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      const rooms = await response.json();
+      return rooms;
+    } catch (error) {
+      throw new Error('Error al obtener las salas: ' + error.message);
+    }
+  }
 }
 
 export default Answer;
