@@ -15,6 +15,7 @@ const AddUserView = ({isVisible, closeModal}) => {
   const [lastNameError, setLastNameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [rolError, setRolError] = useState('');
 
   const validateEmptyFields = () => {
     let isValid = true;
@@ -32,6 +33,11 @@ const AddUserView = ({isVisible, closeModal}) => {
     }
     if (password.trim() === '') {
       setPasswordError('La contraseña es requerida');
+      isValid = false;
+    }
+
+    if (rol.trim() === ''){
+      setRolError('El rol es requerido')
       isValid = false;
     }
     return isValid;
@@ -82,7 +88,7 @@ const AddUserView = ({isVisible, closeModal}) => {
       setLastNameError('');
       setEmailError('');
       setPasswordError('');
-      setRol('');
+      setRolError('');
       return newUserData;
       
     } catch (error) {
@@ -100,6 +106,7 @@ const AddUserView = ({isVisible, closeModal}) => {
       setLastNameError('');
       setEmailError('');
       setPasswordError('');
+      setRolError('');
       closeModal();
   };
 
@@ -144,12 +151,21 @@ const AddUserView = ({isVisible, closeModal}) => {
 
         <Text style={styles.tagInput}>Rol</Text>
         <View style={styles.roleButtons}>
+
+        <TouchableOpacity
+            style={[styles.roleButton, rol === 'admin' && styles.selectedRoleButton]}
+            onPress={() => setRol('admin')}
+          >
+            <Text>Administrador</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity
             style={[styles.roleButton, rol === 'maestro' && styles.selectedRoleButton]}
             onPress={() => setRol('maestro')}
           >
             <Text>Maestro</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={[styles.roleButton, rol === 'usuario' && styles.selectedRoleButton]}
             onPress={() => setRol('usuario')}
@@ -157,6 +173,7 @@ const AddUserView = ({isVisible, closeModal}) => {
             <Text>Usuario</Text>
           </TouchableOpacity>
         </View>
+        {rolError ? <Text style={styles.error}>{rolError}</Text> : null}
 
 
         <View style={styles.haku}>

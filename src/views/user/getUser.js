@@ -8,7 +8,6 @@ const UserCard = ({ user, navigation }) => {
         <Text style={styles.title}>Nombre: {user.name}</Text>
         <Text style={styles.title}>Apellidos: {user.lastName}</Text>
         <Text style={styles.title}>Correo: {user.email}</Text>
-        <Text style={styles.title}>Contraseña: {user.password}</Text>
         <Text style={styles.title}>Rol: {user.rol}</Text>
       </View>
     </TouchableOpacity>

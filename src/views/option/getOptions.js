@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { Button } from 'react-native-paper';
 import OptionController from '../../controllers/optionController';
 
@@ -60,7 +60,7 @@ const OptionCard = ({ option, navigation }) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <TouchableOpacity onPress={handleEdit}>
         <View style={styles.card}>
           <View style={styles.titleC}>
@@ -120,11 +120,15 @@ const OptionCard = ({ option, navigation }) => {
           </TouchableOpacity>
         </View>
       )}
-    </View>
+ </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingBottom: 100,
+  },
   card: {
     backgroundColor: '#b8e4ff',
     borderRadius: 13,
@@ -165,6 +169,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 100,
+    marginVertical: 10,
     marginLeft: 8,
     marginRight: 8,
     marginTop: 10,

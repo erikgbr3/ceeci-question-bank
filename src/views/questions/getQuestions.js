@@ -4,12 +4,34 @@ import DeleteQuestionView from './deleteQuestion';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import QuestionController from '../../controllers/questionController';
 import AnswerController from '../../controllers/answerController';
+import socketIOClient from 'socket.io-client';
 
 const QuestionCard = ({ question, navigation, user, handleQuestionDelete }) => {
 
   const [answer, setAnswer] = useState([])
   const [isModalVisible, setModalVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(question.enabled);
+
+  const socket = socketIOClient(`${BackendConfig.url}`);
+
+  useEffect(() => {
+    // Configurar la conexión a Socket.IO
+    socket.on('connect', () => {
+      console.log('Conectado al servidor de Socket.IO');
+    });
+
+    // Escuchar el evento 'questionEnabledUpdated' para actualizar el estado 'enabled'
+    socket.on('questionEnabledUpdated', (questionId, enabled) => {
+      if (questionId === question.id) {
+        setIsEnabled(enabled);
+      }
+    });
+
+    return () => {
+      // Desconectar el socket cuando el componente se desmonte
+      socket.disconnect();
+    };
+  }, []);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);

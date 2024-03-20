@@ -140,12 +140,6 @@ const ResultView = () => {
     }
   }, [roomsUser]);
 
-  useEffect(() => {
-    if (rooms.length > 0) {
-      fetchBanks(rooms);
-    }
-  }, [rooms]);
-
   return (
     <View style={styles.container}>
     <View style={styles.container2}>

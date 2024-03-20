@@ -71,58 +71,58 @@ const QuestionCardUserSecond = ({ question, user }) => {
           </View>
         </TouchableOpacity>
         {isDropdownOpen && (
-  <View style={styles.optionsContainer}>
-    {options.map((option, index) => (
-      <View key={index}>
-        <TouchableOpacity onPress={() => selectOption(index, 'option1')}>
-          <Text
-            style={[
-              styles.textOption,
-              { fontWeight: selectedOptions[index] === option.option1 ? 'bold' : 'normal' },
-            ]}
-          >
-            A: {option.option1}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => selectOption(index, 'option2')}>
-          <Text
-            style={[
-              styles.textOption,
-              { fontWeight: selectedOptions[index] === option.option2 ? 'bold' : 'normal' },
-            ]}
-          >
-            B: {option.option2}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => selectOption(index, 'option3')}>
-          <Text
-            style={[
-              styles.textOption,
-              { fontWeight: selectedOptions[index] === option.option3 ? 'bold' : 'normal' },
-            ]}
-          >
-            C: {option.option3}
-          </Text>
-        </TouchableOpacity>
-        {isSelectionRequired && !isAnswerSaved && (
-                  <Text style={styles.error}>¡Debe seleccionar una opción!</Text>
+          <View style={styles.optionsContainer}>
+            {options.map((option, index) => (
+              <View key={index}>
+                <TouchableOpacity onPress={() => selectOption(index, 'option1')}>
+                  <Text
+                    style={[
+                      styles.textOption,
+                      { fontWeight: selectedOptions[index] === option.option1 ? 'bold' : 'normal' },
+                    ]}
+                  >
+                    A: {option.option1}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => selectOption(index, 'option2')}>
+                  <Text
+                    style={[
+                      styles.textOption,
+                      { fontWeight: selectedOptions[index] === option.option2 ? 'bold' : 'normal' },
+                    ]}
+                  >
+                    B: {option.option2}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => selectOption(index, 'option3')}>
+                  <Text
+                    style={[
+                      styles.textOption,
+                      { fontWeight: selectedOptions[index] === option.option3 ? 'bold' : 'normal' },
+                    ]}
+                  >
+                    C: {option.option3}
+                  </Text>
+                </TouchableOpacity>
+                {isSelectionRequired && !isAnswerSaved && (
+                          <Text style={styles.error}>¡Debe seleccionar una opción!</Text>
+                        )}
+                {showMessage && (
+                  <Text style={styles.message}>¡Respuesta guardada con éxito!</Text>
                 )}
-        {showMessage && (
-          <Text style={styles.message}>¡Respuesta guardada con éxito!</Text>
+              </View>
+            ))}
+            <View style={styles.saveC}>
+              <TouchableOpacity
+                style={[styles.save, isAnswerSaved && styles.saveDisabled]}
+                onPress={saveAnswer}
+                disabled={isAnswerSaved}
+              >
+                <Text style={styles.saveT}>Guardar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         )}
-      </View>
-    ))}
-    <View style={styles.saveC}>
-      <TouchableOpacity
-        style={[styles.save, isAnswerSaved && styles.saveDisabled]}
-        onPress={saveAnswer}
-        disabled={isAnswerSaved}
-      >
-        <Text style={styles.saveT}>Guardar</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-)}
       </View>
     </View>
   );

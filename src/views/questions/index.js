@@ -49,8 +49,9 @@ const QuestionsView = ({navigation, route}) => {
   useFocusEffect(
     React.useCallback(() => {
       fetchQuestionsUser(route.params.bankId, true);
-    }, [])
+    }, [route.params.bankId])
   );
+
 
   const handleRefresh = async () => {
     console.log('Refrescando preguntas...');
@@ -104,7 +105,7 @@ const QuestionsView = ({navigation, route}) => {
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
           />
-      }
+        }
       >
         <View  style={styles.buttonC}>
           {(user.rol === 'admin' || user.rol === 'maestro') && (

@@ -56,8 +56,8 @@ class User {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
+        const errorText = await response.text();
+        throw new Error(`Request failed with status ${response.status}: ${errorText}`);
       }
 
       const rooms = await response.json();

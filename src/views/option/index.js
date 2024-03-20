@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { TouchableOpacity, StyleSheet, View , FlatList, Text, Image, ScrollView } from "react-native";
+import { TouchableOpacity, StyleSheet, View , FlatList, Text, Image, ScrollView, RefreshControl} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AddOptionView from "./AddOptions";
 import OptionCard from "./getOptions";
@@ -30,6 +30,18 @@ const OptionsView = ({navigation, route}) => {
     }, [])
   );
 
+  const handleRefresh = async () => {
+    console.log('Refrescando opciones...');
+    setIsRefreshing(true);
+    try {
+      await fetchOption(route.params.questionId);
+    } catch (error) {
+      console.error('Error al refrescar las opciones:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   const handleDataUpdate = () => {
     fetchOption(route.params.questionId);
     setDataUpdated(false);
@@ -56,6 +68,16 @@ const OptionsView = ({navigation, route}) => {
   return (
     <View style={styles.container}>
     <View style={styles.container2}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+          />
+        }
+      >      
+     
         <View style={styles.buttonC}>
           {(user.rol === 'admin' || user.rol === 'maestro') && (
             <TouchableOpacity
@@ -64,40 +86,41 @@ const OptionsView = ({navigation, route}) => {
               mode="contained"
               onPress={toggleModal}
             >
-        <Icon name="add" size={30} color="white" />
-      </TouchableOpacity>
-    )}
-     </View>
-      <AddOptionView
-       isVisible={isModalVisible}
-       questionId={route.params.questionId}
-       closeModal={() => {
-         toggleModal();
-         handleUpdateOption();
-       }}
-      />
-      <View style={styles.optionContainer}>
-          {options.map(option => (
-            <OptionCard
-              key={option.id.toString()}
-              option={option}
-              navigation={navigation}
-            />
-          ))}
-      </View>
-      {options.length === 0 && 
-        <View style={styles.ContainerV}>
-          <Text style={styles.text}>
-            No hay opciones disponibles
-          </Text>
-          <View style={styles.imageContainer}>
-            <Image
-              source={require('../../../assets/cat6.gif')}
-              style={styles.image2}
-            /> 
-          </View>
+              <Icon name="add" size={30} color="white" />
+            </TouchableOpacity>
+          )}
         </View>
-      }
+          <AddOptionView
+          isVisible={isModalVisible}
+          questionId={route.params.questionId}
+          closeModal={() => {
+            toggleModal();
+            handleUpdateOption();
+          }}
+          />
+          <View style={styles.optionContainer}>
+              {options.map(option => (
+                <OptionCard
+                  key={option.id.toString()}
+                  option={option}
+                  navigation={navigation}
+                />
+              ))}
+          </View>
+          {options.length === 0 && 
+            <View style={styles.ContainerV}>
+              <Text style={styles.text}>
+                No hay opciones disponibles
+              </Text>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={require('../../../assets/cat6.gif')}
+                  style={styles.image2}
+                /> 
+              </View>
+            </View>
+          }
+       </ScrollView>
     </View>
     </View>
   );
@@ -128,7 +151,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 10,
+    elevation: 10, 
   },
   image: {
     width: 120,
